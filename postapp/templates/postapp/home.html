@@ -1,5 +1,13 @@
-{% load staticfiles %}
+{% extends "postapp/base.html" %}
 
-<h1>메인 화면 </h1>
-
+{% block content %}
 <img src="{% static 'python.png'%}" alt="">
+<h1>메인 화면 고양이 사진들이 온다.</h1>
+<div class="container">
+  {% for cat in cats %}
+  {{cat.name}}
+  {{cat.gender}}
+  <img src="{{ cat.image.url }}" alt="">
+  {% endfor %}
+</div>
+{% endblock %}

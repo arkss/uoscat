@@ -11,4 +11,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',postapp.views.home, name='home'),
     path('create/',postapp.views.create, name='create')
-]
+
+] +static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
