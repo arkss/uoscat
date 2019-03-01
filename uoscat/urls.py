@@ -10,4 +10,5 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',postapp.views.home, name='home'),
+    path('create/',postapp.views.create, name='create')
 ]

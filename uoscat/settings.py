@@ -119,7 +119,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+
+# static 파일 올리기 위한 설정
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'postapp', 'static')
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 # media 파일올리기 위한 url 설정
