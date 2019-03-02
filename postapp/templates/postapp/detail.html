@@ -12,6 +12,15 @@
       <p>마지막으로 밥 준 시간 : {{ cat.lasteat }}</p>
     </div>
   </div>
-  <p>이름 투표 가능</p>
+  <div class="vote">
+    {% if not cat.voting %}
+    <div class="row">
+      <p>새 이름을 지어줄까요?</p>
+      <a class="btn btn-success">네</a>
+    </div>
+    {% else %}
+      투표 진행중
+    {% endif %}
+  </div>
 </div>
 {% endblock %}
