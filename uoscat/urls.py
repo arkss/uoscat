@@ -10,6 +10,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',postapp.views.home, name='home'),
-    path('create/',postapp.views.create, name='create')
+    path('create/',postapp.views.create, name='create'),
+    path('detail/<int:num>',postapp.views.detail, name='detail')
 
 ] +static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
