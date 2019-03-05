@@ -1,17 +1,20 @@
 from django.db import models
 # from django.utils import timezone
 import django.utils.timezone
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 class Cat(models.Model):
     name = models.CharField(max_length=20)
     image = models.ImageField(upload_to='images')
+    image_thumbnail = ImageSpecField(source='image',processors=[ResizeToFill(500,500)],format='BMP')
     gender = models.CharField(choices=[("male","수컷"),("female","암컷"),("null","모름")],max_length=20)
     habitat_x = models.FloatField()
     habitat_y = models.FloatField()
     body = models.TextField(blank=True)
     lasteat = models.DateTimeField(blank=True)
     voting = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return self.name
 

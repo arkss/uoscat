@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'loginapp.apps.LoginappConfig',
     'postapp.apps.PostappConfig',
+    'imagekit',
 
     # 소셜로그인을 위한 앱
 
