@@ -1,9 +1,26 @@
 {% extends "postapp/base.html" %}
 {% block content %}
-
-<h1>각 포스팅의 상세페이지</h1>
-
-<p>이름 투표 가능</p>
-<p>마지막으로 밥 준 시간</p>
-
+<div class="container">
+  <h1>Detail</h1>
+  <div class="row">
+    <figure class="figure">
+      <img src="{{ cat.image.url }}" class="figure-img img-fluid rounded" alt="...">
+      <figcaption class="figure-caption">캡션이지롱</figcaption>
+    </figure>
+    <div>
+      <p>이름 : {{ cat.name }}</p>
+      <p>마지막으로 밥 준 시간 : {{ cat.lasteat }}</p>
+    </div>
+  </div>
+  <div class="vote">
+    {% if not cat.voting %}
+    <div class="row">
+      <p>새 이름을 지어줄까요?</p>
+      <a class="btn btn-success">네</a>
+    </div>
+    {% else %}
+      투표 진행중
+    {% endif %}
+  </div>
+</div>
 {% endblock %}

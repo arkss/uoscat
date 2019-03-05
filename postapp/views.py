@@ -14,8 +14,12 @@ def create(request):
     return
 
 # 각 고양이의 상세페이지
-def detail(request):
-    return
+def detail(request,num):
+    cat=Cat.objects.get(pk=num)
+    context={
+        'cat': cat,
+    }
+    return render(request,'postapp/detail.html',context)
 
 # 고양이의 이름 투표 기능
 def vote(request):
