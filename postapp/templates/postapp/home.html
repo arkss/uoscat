@@ -1,6 +1,9 @@
 {% extends "postapp/base.html" %}
-{% block content %}
+
 {% load staticfiles %}
+
+{% block content %}
+
 <!-- <img src="{% static 'python.png'%}" alt=""> -->
 <div class="container">
   <div class="d-flex">
@@ -17,6 +20,9 @@
       </div>
     </div>
     {% endfor %}
+    
   </div>
+  <div><a href="{%url 'login'%}">login</a></div>
+  
 </div>
 {% endblock %}
