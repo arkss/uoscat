@@ -11,7 +11,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',postapp.views.home, name='home'),
-    path('create/',postapp.views.create, name='create'),
+    path('newcat/',postapp.views.newcat, name="newcat"),
     path('detail/<int:num>',postapp.views.detail, name='detail'),
     path('feed/<int:num>',postapp.views.feed, name='feed'),
     path('login/',loginapp.views.login, name='login'),

@@ -9,7 +9,8 @@
   <div class="d-flex">
     {% for cat in cats %}
     <div class="card m-1" style="width: 18rem;">
-      <img src="{{ cat.image.url }}" class="card-img-top" alt="..." style="width: 18rem;height: 16rem;">
+      <img src="{{ cat.image.url }}" class="card-img-top" alt="..." style="width: 18rem;
+      height: 16rem;">
       <div class="card-body">
         <h5 class="card-title">{{ cat.name }}
           {% if cat.voting %}<span class="badge badge-success">작명중</span>
@@ -23,6 +24,8 @@
     
   </div>
   <div><a href="{%url 'login'%}">login</a></div>
+
+  <div><a href="{% url 'newcat'%}">글쓰기</a></div>
   
 </div>
 {% endblock %}

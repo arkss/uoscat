@@ -3,4 +3,18 @@
 
 <h1>새로운 고양이 사진 등록</h1>
 
+<div class="container">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{form.as_table}}
+        </table>
+        <br>
+        <input type="submit" value="제출하기">
+    </form>
+</div>
+
+
 {% endblock %}
+
+
