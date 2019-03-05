@@ -15,6 +15,5 @@ urlpatterns = [
     path('detail/<int:num>',postapp.views.detail, name='detail'),
     path('feed/<int:num>',postapp.views.feed, name='feed'),
     path('login/',loginapp.views.login, name='login'),
-    path('account/',include('allauth.urls')),
-
+    path('accounts/',include('allauth.urls')),
 ] +static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
