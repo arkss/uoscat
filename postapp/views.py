@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.utils import timezone
 
 from .models import Cat
 # 메인화면
@@ -26,5 +27,8 @@ def vote(request):
     return
 
 # 마지막으로 밥 준 시간
-def feed(request):
-    return
+def feed(request,num):
+    cat=Cat.objects.get(pk=num)
+    cat.lasteat=timezone.now()
+    cat.save()
+    return redirect('/detail/'+str(cat.pk))

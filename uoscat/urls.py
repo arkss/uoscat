@@ -11,6 +11,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',postapp.views.home, name='home'),
     path('create/',postapp.views.create, name='create'),
-    path('detail/<int:num>',postapp.views.detail, name='detail')
+    path('detail/<int:num>',postapp.views.detail, name='detail'),
+    path('feed/<int:num>',postapp.views.feed, name='feed')
 
 ] +static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

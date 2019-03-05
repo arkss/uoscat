@@ -10,6 +10,7 @@
     <div>
       <p>이름 : {{ cat.name }}</p>
       <p>마지막으로 밥 준 시간 : {{ cat.lasteat }}</p>
+      <a href="/feed/{{ cat.pk }}" class="btn btn-secondary">밥줬어요.</a>
     </div>
   </div>
   <div class="vote">
