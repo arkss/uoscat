@@ -24,11 +24,93 @@
 </head>
 <body>
   <div id="main">
-    <div class="header">
-      <h1>header</h1>
-    </div>
+    <header style="margin-bottom: 100px;">
+      <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <!-- logo -->
+            <a class="brand logo" href="{% url 'home' %}">
+      			  <h1>UOSCAT</h1>
+      			</a>
+            <!-- end logo -->
+            <!-- top menu -->
+            <div class="navigation">
+              <nav>
+                <ul class="nav topnav">
+                  <li class="dropdown  active">
+                    <a href="{% url 'home' %}">Home</a>
+                  </li>
+                  <li class="dropdown">
+                    <a href="#">Features</a>
+                    <ul class="dropdown-menu">
+                      <li><a href="overview.html">Overview</a></li>
+                      <li><a href="scaffolding.html">Scaffolding</a></li>
+                      <li><a href="base-css.html">Base CSS</a></li>
+                      <li><a href="components.html">Components</a></li>
+                      <li><a href="javascript.html">Javascripts</a></li>
+                      <li><a href="icons.html">More icons</a></li>
+                      <li class="dropdown"><a href="#">3rd level</a>
+                        <ul class="dropdown-menu sub-menu">
+                          <li><a href="#">Example menu</a></li>
+                          <li><a href="#">Example menu</a></li>
+                          <li><a href="#">Example menu</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="dropdown">
+                    <a href="#">Pages</a>
+                    <ul class="dropdown-menu">
+                      <li><a href="about.html">About us</a></li>
+                      <li><a href="pricingtable.html">Pricing table</a></li>
+                      <li><a href="fullwidth.html">Fullwidth</a></li>
+                      <li><a href="404.html">404</a></li>
+                    </ul>
+                  </li>
+                  <li class="dropdown">
+                    <a href="#">Portfolio</a>
+                    <ul class="dropdown-menu">
+                      <li><a href="portfolio-2cols.html">Portfolio 2 columns</a></li>
+                      <li><a href="portfolio-3cols.html">Portfolio 3 columns</a></li>
+                      <li><a href="portfolio-4cols.html">Portfolio 4 columns</a></li>
+                      <li><a href="portfolio-detail.html">Portfolio detail</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <a href="contact.html">Contact</a>
+                  </li>
+                  <li class="dropdown active">
+                    <a href="{% url 'login' %}">LogIn</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <!-- end menu -->
+          </div>
+        </div>
+      </div>
+    </header>
     {% block content %}
     {% endblock %}
   </div>
+
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/jquery.easing.js' %}"></script>
+  <script src="{% static 'js/google-code-prettify/prettify.js' %}"></script>
+  <script src="{% static 'js/modernizr.js' %}"></script>
+  <script src="{% static 'js/bootstrap.js' %}"></script>
+  <script src="{% static 'js/jquery.elastislide.js' %}"></script>
+  <script src="{% static 'js/sequence/sequence.jquery-min.js' %}"></script>
+  <script src="{% static 'js/sequence/setting.js' %}"></script>
+  <script src="{% static 'js/jquery.prettyPhoto.js' %}"></script>
+  <script src="{% static 'js/portfolio/jquery.quicksand.js' %}"></script>
+  <script src="{% static 'js/portfolio/setting.js' %}"></script>
+  <script src="{% static 'js/application.js' %}"></script>
+  <script src="{% static 'js/jquery.flexslider.js' %}"></script>
+  <script src="{% static 'js/hover/jquery-hover-effect.js' %}"></script>
+  <script src="{% static 'js/hover/setting.js' %}"></script>
+
+  <!-- Template Custom JavaScript File -->
+  <script src="{% static 'js/custom.js' %}"></script>
 </body>
 </html>

@@ -6,23 +6,42 @@
 
 <!-- <img src="{% static 'python.png'%}" alt=""> -->
 <div class="container">
-  <div class="d-flex">
-    {% for cat in cats %}
-    <div class="card m-1" style="width: 18rem;">
-      <img src="{{ cat.image.url }}" class="card-img-top" alt="..." style="width: 18rem;height: 16rem;">
-      <div class="card-body">
-        <h5 class="card-title">{{ cat.name }}
-          {% if cat.voting %}<span class="badge badge-success">작명중</span>
-          {% else %}<span class="badge badge-secondary">작명끝</span>
-          {% endif %}</h5>
-        <p class="card-text">{{ cat.body }}</p>
-        <a href="{% url 'detail' num=cat.pk%}" class="btn btn-primary">Detail</a>
+  <section id="maincontent">
+    <div class="container">
+      <div class="row">
+        <ul class="portfolio-area da-thumbs">
+          {% for cat in cats %}
+          <li class="portfolio-item2" data-id="id-0" data-type="graphic">
+            <div class="span4">
+              <div class="thumbnail">
+                <div class="image-wrapp">
+                  <img src="{{ cat.image_thumbnail.url }}" alt="Portfolio name" title="" />
+                  <article class="da-animate da-slideFromRight" style="display: block;">
+                    <div class="d-flex">
+                    <h4>{{ cat.name }}</h4>
+                    {% if cat.voting %}<span class="badge badge-success">작명중</span>
+                    {% else %}<span class="badge badge-secondary">작명끝</span>
+                    {% endif %}
+                    </div>
+                    <!-- <p style="height:20px; border-radius:2px;background-color: white">{{ cat.body }}</p> -->
+                    <!-- <a href="portfolio-detail.html"><i class="icon-rounded icon-48 icon-link"></i></a> -->
+                    <span><a class="zoom" data-pretty="prettyPhoto" href="{{cat.image.url}}">
+                      <i class="icon-rounded icon-48 icon-zoom-in"></i>
+                    </a></span>
+                    <span><a href="{% url 'detail' num=cat.pk %}">
+                      <i class="icon-rounded icon-48 icon-book"></i>
+                    </a></span>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
       </div>
     </div>
-    {% endfor %}
-    
-  </div>
+  </section>
   <div><a href="{%url 'login'%}">login</a></div>
-  
+
 </div>
 {% endblock %}
