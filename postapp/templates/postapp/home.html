@@ -1,7 +1,9 @@
 {% extends "postapp/base.html" %}
 
-{% block content %}
 {% load staticfiles %}
+
+{% block content %}
+
 <!-- <img src="{% static 'python.png'%}" alt=""> -->
 <div class="container">
   <h1>메인 화면 고양이 사진들이 온다.</h1>
@@ -19,6 +21,9 @@
       </div>
     </div>
     {% endfor %}
+    
   </div>
+  <div><a href="{%url 'login'%}">login</a></div>
+  
 </div>
 {% endblock %}
