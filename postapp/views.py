@@ -18,6 +18,7 @@ def newcat(request):
         form = CatPost(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
+            # 임시 위치
             post.habitat_x = 1.0
             post.habitat_y = 1.0
             post.lasteat = timezone.now()
