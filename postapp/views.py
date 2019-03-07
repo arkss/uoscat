@@ -3,7 +3,7 @@ from django.utils import timezone
 
 from .form import CatPost
 
-from .models import Cat
+from .models import Cat,Choice, Vote
 # 메인화면
 def home(request):
     cats=Cat.objects.all()
@@ -38,8 +38,21 @@ def detail(request,num):
     return render(request,'postapp/detail.html',context)
 
 # 고양이의 이름 투표 기능
-def vote(request):
-    return
+def vote(request,num):
+    cat = Cat.objects.get(pk=num)
+    # 투표중인지 표시
+    if cat.voting:
+        cat.voting = False
+    else:
+        cat.voting = True
+    choices = Choice.objects.all()
+    for choice in choices:
+        print(choice.name)
+    
+    cat.save()
+    return redirect('/detail/'+str(cat.pk))
+    # return render(request, '/detail/'+str(cat.pk))
+    
 
 # 마지막으로 밥 준 시간
 def feed(request,num):

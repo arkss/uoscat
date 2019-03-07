@@ -5,7 +5,7 @@
   <div class="row">
     <figure class="figure">
       <img src="{{ cat.image.url }}" class="figure-img img-fluid rounded" alt="...">
-      <figcaption class="figure-caption">캡션이지롱</figcaption>
+      
     </figure>
     <div>
       <p>이름 : {{ cat.name }}</p>
@@ -17,10 +17,42 @@
     {% if not cat.voting %}
     <div class="row">
       <p>새 이름을 지어줄까요?</p>
-      <a class="btn btn-success">네</a>
+      <a href="/vote/{{ cat.pk }}"class="btn btn-success">네</a>
     </div>
     {% else %}
-      투표 진행중
+      <p>투표 진행중</p>
+
+      <!-- 이름 투표 테이블 -->
+      <table class="table table-striped">
+          <thead>
+          <tr>
+              <td><B>이름</B></td>
+              
+              <td><B>지지하기</B></td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+              <td> 못난이</td>
+             
+              <td>
+                  <form action = "#" method="post">
+                      <button name="choice" value="#">선택</button>
+                  </form>
+              </td>
+          </tr>
+          <tr>
+              <td> 멍청이</td>
+             
+              <td>
+                  <form action = "#" method="post">
+                      <button name="choice" value="#">선택</button>
+                  </form>
+              </td>
+          </tr>       
+          </tbody>
+      </table>
+      <a href="/vote/{{cat.pk}}" class="btn btn-success">투표 종료</a>
     {% endif %}
   </div>
 </div>
