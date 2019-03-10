@@ -14,6 +14,7 @@ urlpatterns = [
     path('newcat/',postapp.views.newcat, name="newcat"),
     path('detail/<int:num>',postapp.views.detail, name='detail'),
     path('feed/<int:num>',postapp.views.feed, name='feed'),
+    path('addhabitat/<int:num>',postapp.views.addhabitat, name='addhabitat'),
     path('login/',loginapp.views.login, name='login'),
     path('accounts/',include('allauth.urls')),
 ] +static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

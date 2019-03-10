@@ -42,6 +42,16 @@ def detail(request,num):
     }
     return render(request,'postapp/detail.html',context)
 
+def addhabitat(request,num):
+    if request.method == 'POST':
+        cat=Cat.objects.get(pk=num)
+        position_string=request.POST['position_string'].split('&')
+        position=[e.split(',') for e in position_string][:-1]
+        for xy in position:
+            cat.habitat_set.create(x=float(xy[0]),y=float(xy[1]))
+        print(cat.habitat_set.all())
+    return redirect('detail',str(num))
+
 # 고양이의 이름 투표 기능
 def vote(request):
     return

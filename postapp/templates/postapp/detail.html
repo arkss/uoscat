@@ -37,18 +37,23 @@
                 </div>
                 <div class="span4">
                   <div class="project-widget">
-                    <h4><i class="icon-48 icon-beaker"></i> Project info</h4>
+                    <h4><i class="icon-48 icon-beaker"></i> Cat Info</h4>
                     <ul class="project-detail">
                       <li><label>고양이 이름 :</label> {{ cat.name }}</li>
                       <li><label>마지막 식사 :</label> {{ cat.lasteat }} <a href="/feed/{{ cat.pk }}" class="btn btn-secondary">밥줬어요.</a></li>
                     </ul>
                   </div>
+
                   <div class="project-widget">
-                    <h4><i class="icon-48 icon-beaker"></i> 서식지</h4>
-                    <ul class="project-detail">
-                      <li><label>{{ cat.name }}을 발견한 곳을 클릭한 후 제출!</label> <a class="btn btn-secondary">제출</a></li>
-                      <li><div id="map" style="width:338px;height:300px;"></div><a onclick="removeCircles()" class="btn btn-secondary">변경내용 모두삭제</a></li>
-                    </ul>
+                      <h4><i class="icon-48 icon-map-marker"></i> 서식지</h4>
+                      <form action="{% url 'addhabitat' num=cat.pk %}" method="post">
+                        {% csrf_token %}
+                        <ul class="project-detail">
+                          <li><label>발견지역들 클릭한 후 제출!</label><button type="submit" class="btn btn-secondary" style="margin-left:10px;">제출</button></li>
+                          <input id="position_string" type="text" name="position_string" style="display:none;">
+                          <li><div id="map" style="width:100%;height:300px;"></div><a onclick="removeCircles()" class="btn btn-secondary">변경내용 모두삭제</a></li>
+                        </ul>
+                      </form>
                   </div>
                 </div>
               </div>

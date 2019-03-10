@@ -24,13 +24,15 @@ const circle=pos.map((e,i)=>{
   // 지도에 원을 표시합니다
 });
 showCircles(circle);
-// circle.map(e=>e.setMap(map)) //다 뿌리기
 // http://apis.map.daum.net/web/sample/drawShape 참고
 
 //click event
 var userCircles=[];
 daum.maps.event.addListener(map, 'click', function(mouseEvent) {
-    addCircle(mouseEvent.latLng)
+    centerPosition=mouseEvent.latLng;
+    addCircle(centerPosition);
+    var input=document.getElementById('position_string');
+    input.value=input.value+centerPosition['jb']+','+centerPosition['ib']+'&'
 });
 // 마커를 생성하고 지도위에 표시하는 함수입니다
 function addCircle(position) {
@@ -50,6 +52,8 @@ function addCircle(position) {
     userCircles.push(newCircle)
 }
 function removeCircles(){
+  var input=document.getElementById('position_string');
+  input.value=''
   userCircles.map(e=>e.setMap(null))
   userCircles=[];
 }
