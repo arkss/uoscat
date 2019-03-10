@@ -1,14 +1,18 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
-
+from django.core.paginator import Paginator
 from .form import CatPost
 
 from .models import Cat,Choice, Vote
 # 메인화면
 def home(request):
     cats=Cat.objects.all()
+    paginator = Paginator(cats, 6)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
     context={
         'cats': cats,
+        'posts': posts,
     }
     return render(request, 'postapp/home.html',context)
 
