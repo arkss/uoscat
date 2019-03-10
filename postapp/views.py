@@ -35,11 +35,6 @@ def newcat(request):
 def detail(request,num):
     cat=Cat.objects.get(pk=num)
     habitats=[pos.as_dict() for pos in cat.habitat_set.all()]
-    print(habitats)
-    # habitats_json = serializers.serialize('json', habitats)
-    # habitats_json = [ {data.fields} for data,e in habitats_json]
-    # print(habitats_json)
-    # try:
     context={
         'cat': cat,
         'habitat_len': len(habitats),

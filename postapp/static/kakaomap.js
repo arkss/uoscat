@@ -28,32 +28,31 @@ showCircles(circle);
 // http://apis.map.daum.net/web/sample/drawShape 참고
 
 //click event
+var userCircles=[];
 daum.maps.event.addListener(map, 'click', function(mouseEvent) {
-    addMarker(mouseEvent.latLng);
+    addCircle(mouseEvent.latLng)
 });
-
 // 마커를 생성하고 지도위에 표시하는 함수입니다
-var markers=[];
-function addMarker(position) {
+function addCircle(position) {
     // 마커를 생성합니다
-    var marker = new daum.maps.Marker({
-        position: position
+    newCircle = new daum.maps.Circle({
+        center: position,
+        radius: 20, // 미터 단위의 원의 반지름입니다
+        strokeWeight: 2, // 선의 두께입니다
+        strokeColor: '#75B8FA', // 선의 색깔입니다
+        strokeOpacity: 0.3, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+        strokeStyle: 'dashed', // 선의 스타일 입니다
+        fillColor: '#F1685E', // 채우기 색깔입니다
+        fillOpacity: 0.3  // 채우기 불투명도 입니다
     });
-    console.log(position['ib'],position['jb'])
     // 마커가 지도 위에 표시되도록 설정합니다
-    marker.setMap(map);
-
-    // 생성된 마커를 배열에 추가합니다
-    markers.push(marker);
+    newCircle.setMap(map);
+    userCircles.push(newCircle)
 }
-
-// 배열에 추가된 마커들을 지도에 표시하거나 삭제하는 함수입니다
-function setMarkers(map) {
-    for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(map);
-    }
+function removeCircles(){
+  userCircles.map(e=>e.setMap(null))
+  userCircles=[];
 }
-
 function showCircles(circle){
   for(let i=0;i<circle.length;i++){
     circle[i].setMap(map);

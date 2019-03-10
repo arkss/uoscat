@@ -47,7 +47,7 @@
                     <h4><i class="icon-48 icon-beaker"></i> 서식지</h4>
                     <ul class="project-detail">
                       <li><label>{{ cat.name }}을 발견한 곳을 클릭한 후 제출!</label> <a class="btn btn-secondary">제출</a></li>
-                      <li><div id="map" style="width:338px;height:300px;"></div></li>
+                      <li><div id="map" style="width:338px;height:300px;"></div><a onclick="removeCircles()" class="btn btn-secondary">변경내용 모두삭제</a></li>
                     </ul>
                   </div>
                 </div>
@@ -68,7 +68,6 @@
     const pos_string="{{pos}}".replace(/&#39;/g,"\"");
   </script>
   <script type="text/javascript" src="{%static 'kakaomap.js' %}"
-
   <div class="vote">
     {% if not cat.voting %}
     <div class="row">
