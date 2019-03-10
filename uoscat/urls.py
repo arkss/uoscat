@@ -14,7 +14,9 @@ urlpatterns = [
     path('newcat/',postapp.views.newcat, name="newcat"),
     path('detail/<int:num>',postapp.views.detail, name='detail'),
     path('feed/<int:num>',postapp.views.feed, name='feed'),
-    path('vote/<int:num>',postapp.views.vote, name='vote'),
+    path('votecondition/<int:num>',postapp.views.vote_condition, name='vote_condition'),
+    path('vote/<int:vote_id>', postapp.views.vote, name='vote'),
+    path('addname/<int:cat_id>', postapp.views.add_name, name='add_name'),
     path('login/',loginapp.views.login, name='login'),
     path('accounts/',include('allauth.urls')),
 ] +static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
