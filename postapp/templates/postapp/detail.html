@@ -41,13 +41,14 @@
                     <ul class="project-detail">
                       <li><label>고양이 이름 :</label> {{ cat.name }}</li>
                       <li><label>마지막 식사 :</label> {{ cat.lasteat }} <a href="/feed/{{ cat.pk }}" class="btn btn-secondary">밥줬어요.</a></li>
-                      <!-- <li><label>Project date :</label> 2 March 2013</li>
-                      <li><label>Project link :</label><a href="#">www.somelink.com</a></li> -->
                     </ul>
                   </div>
-                  <div class="kakaomap">
-                    <h4>서식지</h4>
-                    <div id="map" style="width:374px;height:300px;"></div>
+                  <div class="project-widget">
+                    <h4><i class="icon-48 icon-beaker"></i> 서식지</h4>
+                    <ul class="project-detail">
+                      <li><label>{{ cat.name }}을 발견한 곳을 클릭한 후 제출!</label> <a class="btn btn-secondary">제출</a></li>
+                      <li><div id="map" style="width:338px;height:300px;"></div></li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -64,27 +65,9 @@
   <!-- kakao map -->
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=94d0a2f58c194ef47c239fd937aaaac4"></script>
   <script type="text/javascript">
-    var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-    var options = { //지도를 생성할 때 필요한 기본 옵션
-    	center: new daum.maps.LatLng({{cat.habitat_x}}, {{cat.habitat_y}}), //지도의 중심좌표.
-    	level: 3 //지도의 레벨(확대, 축소 정도)
-    };
-
-    var map = new daum.maps.Map(container, options); //지도 생성 및 객체 리턴
-
-    var circle = new daum.maps.Circle({
-        center : new daum.maps.LatLng({{cat.habitat_x}}, {{cat.habitat_y}}),  // 원의 중심좌표 입니다
-        radius: 50, // 미터 단위의 원의 반지름입니다
-        strokeWeight: 5, // 선의 두께입니다
-        strokeColor: '#75B8FA', // 선의 색깔입니다
-        strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-        strokeStyle: 'dashed', // 선의 스타일 입니다
-        fillColor: '#CFE7FF', // 채우기 색깔입니다
-        fillOpacity: 0.7  // 채우기 불투명도 입니다
-    });
-    circle.setMap(map);
-
+    const pos_string="{{pos}}".replace(/&#39;/g,"\"");
   </script>
+  <script type="text/javascript" src="{%static 'kakaomap.js' %}"
 
   <div class="vote">
     {% if not cat.voting %}

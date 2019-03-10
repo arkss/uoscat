@@ -9,8 +9,8 @@ class Cat(models.Model):
     image = models.ImageField(upload_to='images')
     image_thumbnail = ImageSpecField(source='image',processors=[ResizeToFill(500,500)],format='BMP')
     gender = models.CharField(choices=[("male","수컷"),("female","암컷"),("null","모름")],max_length=20)
-    habitat_x = models.FloatField(default=37.5839)
-    habitat_y = models.FloatField(default=127.0588)
+    # habitat_x = models.FloatField(default=37.5839)
+    # habitat_y = models.FloatField(default=127.0588)
     body = models.TextField(blank=True)
     lasteat = models.DateTimeField(blank=True)
     voting = models.BooleanField(default=False)
@@ -32,3 +32,14 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.name
+
+class Habitat(models.Model):
+    x=models.FloatField(blank=False)
+    y=models.FloatField(blank=False)
+    cat=models.ForeignKey(Cat,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "(%.5f,%.5f)"%(self.x,self.y)
+
+    def as_dict(self):
+        return {'x':self.x,'y':self.y}
