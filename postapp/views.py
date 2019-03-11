@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.core.paginator import Paginator
+from django.core import serializers
+
 from .form import CatPost
 
 from .models import Cat,Choice, Vote
@@ -22,6 +24,7 @@ def newcat(request):
         form = CatPost(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
+            # 임시 위치
             post.habitat_x = 1.0
             post.habitat_y = 1.0
             post.lasteat = timezone.now()
@@ -56,6 +59,26 @@ def detail(request,num):
 
 # 투표 종료 및 시작을 다루는 임시 함수, 후에는 Vote의 객체를 삭제해줌으로서 이 기능을 대신한다.
 def vote_condition(request,num):
+    habitats=[pos.as_dict() for pos in cat.habitat_set.all()]
+    context={
+        'cat': cat,
+        'habitat_len': len(habitats),
+        'pos': habitats,
+    }
+    return render(request,'postapp/detail.html',context)
+
+def addhabitat(request,num):
+    if request.method == 'POST':
+        cat=Cat.objects.get(pk=num)
+        position_string=request.POST['position_string'].split('&')
+        position=[e.split(',') for e in position_string][:-1]
+        for xy in position:
+            cat.habitat_set.create(x=float(xy[0]),y=float(xy[1]))
+        print(cat.habitat_set.all())
+    return redirect('detail',str(num))
+
+# 고양이의 이름 투표 기능
+def vote(request,num):
     cat = Cat.objects.get(pk=num)
     
     # 투표중인지 표시
