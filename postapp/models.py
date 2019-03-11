@@ -33,21 +33,8 @@ class Choice(models.Model):
     def __str__(self):
         return self.name
 
-<<<<<<< HEAD
 
 
-<<<<<<< HEAD
-=======
-# class Poll(models.Model):
-#     start_date = models.DateTimeField()
-#     end_date = models.DateTimeField()
-#     area = models.CharField(max_length = 15)
-
-# class Choice(models.Model):
-#     poll = models.ForeignKey(Poll) #Poll 모델의 id를 이용
-#     candidate = models.ForeignKey(Candidate)
-#     votes = models.IntegerField(default = 0)
-=======
 class Habitat(models.Model):
     x=models.FloatField(blank=False)
     y=models.FloatField(blank=False)
@@ -58,5 +45,3 @@ class Habitat(models.Model):
 
     def as_dict(self):
         return {'x':self.x,'y':self.y}
->>>>>>> dd0ef29e05c6403e78b83ef02aaf7c75532851c7
->>>>>>> master
