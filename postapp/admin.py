@@ -1,14 +1,10 @@
 from django.contrib import admin
-<<<<<<< HEAD
-from .models import Cat, Vote, Choice
-=======
-from .models import Cat,Vote, Choice
->>>>>>> minsung
+
+from .models import Cat, Vote, Choice,Habitat
+
 
 admin.site.register(Cat)
 admin.site.register(Vote)
 admin.site.register(Choice)
-<<<<<<< HEAD
-=======
+admin.site.register(Habitat)
 
->>>>>>> minsung

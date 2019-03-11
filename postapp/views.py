@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.utils import timezone
+from django.core import serializers
 
 from .form import CatPost
 
@@ -33,10 +34,23 @@ def newcat(request):
 # 각 고양이의 상세페이지
 def detail(request,num):
     cat=Cat.objects.get(pk=num)
+    habitats=[pos.as_dict() for pos in cat.habitat_set.all()]
     context={
         'cat': cat,
+        'habitat_len': len(habitats),
+        'pos': habitats,
     }
     return render(request,'postapp/detail.html',context)
+
+def addhabitat(request,num):
+    if request.method == 'POST':
+        cat=Cat.objects.get(pk=num)
+        position_string=request.POST['position_string'].split('&')
+        position=[e.split(',') for e in position_string][:-1]
+        for xy in position:
+            cat.habitat_set.create(x=float(xy[0]),y=float(xy[1]))
+        print(cat.habitat_set.all())
+    return redirect('detail',str(num))
 
 # 고양이의 이름 투표 기능
 def vote(request,num):
