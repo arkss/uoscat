@@ -74,45 +74,57 @@
   </script>
   <script type="text/javascript" src="{%static 'kakaomap.js' %}"></script>
   <div class="vote">
+    <!-- 나중에 투표종료를 누르면 Vote의 객체를 없애서 투표창을없애주도록 하자. -->
+    {% if vote %}
+    <p>투표 내용입니다.</p>
+    <!-- 투표의 내용 -->
+    {% else %}
+    <p>현재 투표가 없습니다.</p>
+    <!-- 투표를 새로 시작하는 창 -->
+    {% endif %}
+
+
+
+
     {% if not cat.voting %}
     <div class="row">
       <p>새 이름을 지어줄까요?</p>
-      <a href="/vote/{{ cat.pk }}"class="btn btn-success">네</a>
+      <a href="/votecondition/{{ cat.pk }}"class="btn btn-success">네</a>
     </div>
     {% else %}
       <p>투표 진행중</p>
+
 
       <!-- 이름 투표 테이블 -->
       <table class="table table-striped">
           <thead>
           <tr>
               <td><B>이름</B></td>
-
+              <td><B>투표수</B></td>
               <td><B>지지하기</B></td>
           </tr>
           </thead>
+          <!-- 기존에 있던 이름도 여기에 추가를 해주자.  -->
+         {% for choice in choices  %}
           <tbody>
-          <tr>
-              <td> 못난이</td>
-
+            <tr>
+              <td>{{choice.name}}</td>
+              <td>{{choice.count}}</td>
               <td>
-                  <form action = "#" method="post">
-                      <button name="choice" value="#">선택</button>
-                  </form>
-              </td>
-          </tr>
-          <tr>
-              <td> 멍청이</td>
-
-              <td>
-                  <form action = "#" method="post">
-                      <button name="choice" value="#">선택</button>
+                  <form action = "{%url 'vote' vote.id%}" method="POST">
+                    {% csrf_token %}
+                      <button name="choice" value="{{choice.id}}">선택</button>
                   </form>
               </td>
           </tr>
           </tbody>
+          {% endfor %}
       </table>
-      <a href="/vote/{{cat.pk}}" class="btn btn-success">투표 종료</a>
+      <form action="{% url 'add_name' cat.id%}">
+        <input type="text" name="add_name">
+        <input class = "btn btn-dark" type="submit" value="새 이름 추가하기">
+      </form>
+      <a href="/votecondition/{{cat.pk}}" class="btn btn-success">투표 종료</a>
     {% endif %}
   </div>
 </div>

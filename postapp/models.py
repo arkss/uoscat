@@ -23,7 +23,7 @@ class Vote(models.Model):
     cat = models.OneToOneField(Cat,on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.cat.name
+        return self.cat.name+"의 투표"
 
 class Choice(models.Model):
     vote = models.ForeignKey(Vote,on_delete=models.CASCADE)
@@ -32,6 +32,8 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.name
+
+
 
 class Habitat(models.Model):
     x=models.FloatField(blank=False)
