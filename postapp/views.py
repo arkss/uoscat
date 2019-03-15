@@ -43,7 +43,7 @@ def detail(request,num):
     # vote가 없을 경우 예외 처리
     try:
         vote = Vote.objects.get(cat_id=num)
-        
+
     except:
         vote = Vote(cat_id=num)
         vote.save()
@@ -68,13 +68,13 @@ def addhabitat(request,num):
         position=[e.split(',') for e in position_string][:-1]
         for xy in position:
             cat.habitat_set.create(x=float(xy[0]),y=float(xy[1]))
-        print(cat.habitat_set.all())
+        # print(cat.habitat_set.all())
     return redirect('detail',str(num))
 
 # 고양이의 이름 투표 기능
 def vote_condition(request,num):
     cat = Cat.objects.get(pk=num)
-    
+
     # 투표중인지 표시
 
     # 투표를 종료하면 기존의 이름도 데이터에서 삭제해준다. 나중에는 그냥 투표자체를 없애는 걸로 바꾸자.
@@ -88,14 +88,14 @@ def vote_condition(request,num):
                 max_count = choice.count
         new_name = Choice.objects.get(count = max_count)
         cat.name = str(new_name)
-        
+
         vote = Vote.objects.get(cat_id=cat.id).delete()
-       
+
         # 값을 지울 때는 위에 두 줄이 아닌 아래 한 줄 처럼 해야한다. 왜그럴까...?
         # delete_name = Choice.objects.get(vote_id=cat.vote.id, name=cat.name)
         # delete_name.delete()
         # Choice.objects.get(vote_id=cat.vote.id, name=cat.name).delete()
-        
+
     # 투표를 시작하면 voting을 True로 바꿔주고 현재 고양이의 이름도 투표 목록에 넣어준다.
     else:
         cat.voting = True
@@ -105,10 +105,10 @@ def vote_condition(request,num):
     # choices = Choice.objects.all()
     cat.save()
     return redirect('/detail/'+str(cat.pk))
-    
-    
+
+
 def vote(request, vote_id):
-    
+
     # cat = Cat.objects.get(pk=cat_id)
     vote = Vote.objects.get(pk=vote_id)
     # 이따 프론트에서 이 값으로 투표할 이름을 가져오게끔 하자.
@@ -121,7 +121,7 @@ def vote(request, vote_id):
     except:
         choice = Choice(vote_id=vote_id, name=selection, count=1)
         choice.save()
-    
+
     return redirect('/detail/'+str(vote.cat.id))
 
 
