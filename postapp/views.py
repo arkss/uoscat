@@ -39,7 +39,7 @@ def newcat(request):
 # 각 고양이의 상세페이지
 def detail(request,num):
     cat=Cat.objects.get(pk=num)
-    
+    habitats=[pos.as_dict() for pos in cat.habitat_set.all()]
     # vote가 없을 경우 예외 처리
     try:
         vote = Vote.objects.get(cat_id=num)
@@ -54,6 +54,8 @@ def detail(request,num):
         'cat': cat,
         'choices': choices,
         'vote': vote,
+        'habitat_len': len(habitats),
+        'pos': habitats,
     }
     return render(request,'postapp/detail.html',context)
 
