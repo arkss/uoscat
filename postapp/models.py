@@ -33,16 +33,6 @@ class Choice(models.Model):
     def __str__(self):
         return self.name
 
-class Poll(models.Model):
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    area = models.CharField(max_length = 15)
-
-class Choice(models.Model):
-    poll = models.ForeignKey(Poll) #Poll 모델의 id를 이용
-    candidate = models.ForeignKey(Candidate)
-    votes = models.IntegerField(default = 0)
-    
 class Habitat(models.Model):
     x=models.FloatField(blank=False)
     y=models.FloatField(blank=False)
