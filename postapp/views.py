@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.core import serializers
-
+from django.contrib.auth import logout
 from .form import CatPost
 
 from .models import Cat,Choice, Vote
@@ -141,3 +141,7 @@ def add_name(request, cat_id):
     choice.count = 0
     choice.save()
     return redirect('/detail/'+str(cat.pk))
+
+def logout_view(request):
+    logout(request)
+    return redirect("home")
