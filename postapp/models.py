@@ -56,4 +56,4 @@ class Habitat(models.Model):
 
     def as_dict(self):
         return {'x':self.x,'y':self.y}
->>>>>>> dd0ef29e05c6403e78b83ef02aaf7c75532851c7
+# >>>>>>> dd0ef29e05c6403e78b83ef02aaf7c75532851c7
