@@ -57,15 +57,7 @@ def detail(request,num):
     }
     return render(request,'postapp/detail.html',context)
 
-# 투표 종료 및 시작을 다루는 임시 함수, 후에는 Vote의 객체를 삭제해줌으로서 이 기능을 대신한다.
-def vote_condition(request,num):
-    habitats=[pos.as_dict() for pos in cat.habitat_set.all()]
-    context={
-        'cat': cat,
-        'habitat_len': len(habitats),
-        'pos': habitats,
-    }
-    return render(request,'postapp/detail.html',context)
+
 
 def addhabitat(request,num):
     if request.method == 'POST':
@@ -95,7 +87,6 @@ def vote_condition(request,num):
         new_name = Choice.objects.get(count = max_count)
         cat.name = str(new_name)
         
-
         vote = Vote.objects.get(cat_id=cat.id).delete()
        
         # 값을 지울 때는 위에 두 줄이 아닌 아래 한 줄 처럼 해야한다. 왜그럴까...?
