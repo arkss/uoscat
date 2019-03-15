@@ -33,7 +33,7 @@ class Choice(models.Model):
     def __str__(self):
         return self.name
 
-<<<<<<< HEAD
+# <<<<<<< HEAD
 
 
 # class Poll(models.Model):
@@ -45,7 +45,7 @@ class Choice(models.Model):
 #     poll = models.ForeignKey(Poll) #Poll 모델의 id를 이용
 #     candidate = models.ForeignKey(Candidate)
 #     votes = models.IntegerField(default = 0)
-=======
+# =======
 class Habitat(models.Model):
     x=models.FloatField(blank=False)
     y=models.FloatField(blank=False)
