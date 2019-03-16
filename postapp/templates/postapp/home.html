@@ -38,9 +38,9 @@
           </li>
           {% endfor %}
         </ul>
-        
+
       </div>
-      
+
     </div>
   </section>
   <div class=center>
@@ -58,9 +58,6 @@
       <a href="?page={{posts.paginator.num_pages}}">맨 뒤로</a>
     {% endif %}
   </div>
-  <div><a href="{%url 'login'%}">login</a></div>
 
-  <div><a href="{% url 'newcat'%}">글쓰기</a></div>
-  
 </div>
 {% endblock %}

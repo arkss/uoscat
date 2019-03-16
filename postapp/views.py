@@ -15,6 +15,7 @@ def home(request):
     context={
         'cats': cats,
         'posts': posts,
+        'now': 'home',
     }
     return render(request, 'postapp/home.html',context)
 
@@ -56,6 +57,7 @@ def detail(request,num):
         'vote': vote,
         'habitat_len': len(habitats),
         'pos': habitats,
+        'now': 'detail',
     }
     return render(request,'postapp/detail.html',context)
 
