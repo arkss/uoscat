@@ -33,8 +33,6 @@ class Choice(models.Model):
     def __str__(self):
         return self.name
 
-
-
 class Habitat(models.Model):
     x=models.FloatField(blank=False)
     y=models.FloatField(blank=False)
