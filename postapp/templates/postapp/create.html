@@ -1,20 +1,19 @@
 {% extends "postapp/base.html" %}
 {% block content %}
 
-<h1>새로운 고양이 사진 등록</h1>
+
 
 <div class="container">
+    <h1>새로운 고양이 사진 등록</h1>
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <table>
             {{form.as_table}}
         </table>
         <br>
-        <input type="submit" value="제출하기">
+        <button type="submit" class="btn btn-primary">제출하기</button>
     </form>
 </div>
 
 
 {% endblock %}
-
-
