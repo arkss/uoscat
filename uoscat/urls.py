@@ -8,7 +8,7 @@ import loginapp.views
 from django.conf import settings
 from django.conf.urls.static import static
 
-from django.contrib.auth import logout
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,7 +23,8 @@ urlpatterns = [
     path('vote/<int:num>',postapp.views.vote, name='vote'),
     path('addhabitat/<int:num>',postapp.views.addhabitat, name='addhabitat'),
     path('login/',loginapp.views.login, name='login'),
-    path('accounts/',include('allauth.urls'), name='social'),
+    path('accounts/',include('allauth.urls')),
+   
     path('my_logout/',loginapp.views.my_logout,name='logout' ),
 ] +static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
