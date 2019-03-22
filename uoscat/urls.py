@@ -15,6 +15,7 @@ urlpatterns = [
     path('',postapp.views.home, name='home'),
     path('newcat/',postapp.views.newcat, name="newcat"),
     path('detail/<int:num>',postapp.views.detail, name='detail'),
+    path('detail/<int:cat_id>/delete',postapp.views.delete, name='delete'),
     path('feed/<int:num>',postapp.views.feed, name='feed'),
 
     path('votecondition/<int:num>',postapp.views.vote_condition, name='vote_condition'),

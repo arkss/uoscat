@@ -143,3 +143,10 @@ def add_name(request, cat_id):
     choice.count = 0
     choice.save()
     return redirect('/detail/'+str(cat.pk))
+
+# 고양이 글 삭제
+
+def delete(request, cat_id):
+    cat = Cat.objects.get(id=cat_id).delete()
+    
+    return redirect('/')
