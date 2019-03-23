@@ -25,9 +25,6 @@ def newcat(request):
         form = CatPost(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
-            # 임시 위치
-            post.habitat_x = 1.0
-            post.habitat_y = 1.0
             post.lasteat = timezone.now()
             post.save()
             return redirect('home')
@@ -147,6 +144,29 @@ def add_name(request, cat_id):
 # 고양이 글 삭제
 
 def delete(request, cat_id):
-    cat = Cat.objects.get(id=cat_id).delete()
-    
+    cat = Cat.objects.get(id=cat_id)
+    cat.delete()
     return redirect('/')
+
+# 고양이 글 수정
+
+def edit(request, cat_id):
+    cat = Cat.objects.get(id=cat_id)
+    # 글을 수정사항을 입력하고 제출을 눌렀을 때
+    if request.method == "POST":
+        form = CatPost(request.POST, request.FILES)
+        if form.is_valid():
+            print(form.cleaned_data)
+            cat.name = form.cleaned_data['name']
+            cat.image = form.cleaned_data['image']
+            cat.gender = form.cleaned_data['gender']
+            cat.body = form.cleaned_data['body']
+            cat.save()
+            return redirect('/detail/'+str(cat.pk))
+        
+    # 수정사항을 입력하기 위해 페이지에 처음 접속했을 때
+    else:
+        form = CatPost()
+        return render(request, 'postapp/edit_post.html',{'form':form})
+
+    

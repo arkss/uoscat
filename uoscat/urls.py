@@ -14,10 +14,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',postapp.views.home, name='home'),
     path('newcat/',postapp.views.newcat, name="newcat"),
+    
     path('detail/<int:num>',postapp.views.detail, name='detail'),
-    path('detail/<int:cat_id>/delete',postapp.views.delete, name='delete'),
+    path('detail/<int:cat_id>/delete',postapp.views.delete, name='delete'), # 글 삭제
+    path('detail/<int:cat_id>/edit', postapp.views.edit, name='edit'), # 글 수정
     path('feed/<int:num>',postapp.views.feed, name='feed'),
-
     path('votecondition/<int:num>',postapp.views.vote_condition, name='vote_condition'),
     path('vote/<int:vote_id>', postapp.views.vote, name='vote'),
     path('addname/<int:cat_id>', postapp.views.add_name, name='add_name'),
