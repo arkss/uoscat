@@ -139,14 +139,16 @@ def add_name(request, cat_id):
     cat = Cat.objects.get(id = cat_id)
     choice = Choice(vote_id = cat.vote.id)
     choice_all = Choice.objects.filter(vote_id=cat.vote.id)
-    choice.name = request.GET['add_name']
+    # 입력 시 공백문자를 무시하고 가져온다.
+    choice.name = request.GET['add_name'].strip()
     
     # 투표에 이름 추가시 같은 이름 있을 경우 추가 안되게 하기
     # 기존의 같은 이름이 있는지 확인해준다. 해당 투표에 선택받을 수 있는 이름을 다가져와 이를 순회하면서 입력 받은 값과 같으면 값을 저장하지 않고 redirect 시킨다.
     for choice_one in choice_all:
         # type(choice_one) 은 <class 'postapp.models.Choice'>
         # type(choice.name) 은 <class 'str'> 이어서 형변환을 시켜서 비교해주었다.
-        if str(choice_one) == choice.name:
+        # 입력한 이름의 길이가 0일 경우(위에서 화이트 스페이스를 모두 제거 해주었으므로 화이트스페이스로만 입력하면 무조건 길이가 0이다.) 예외처리해준다.
+        if str(choice_one) == choice.name or len(choice.name) == 0:
             return redirect('/detail/'+str(cat.pk))
     choice.count = 0
     choice.save()
