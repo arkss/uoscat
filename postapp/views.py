@@ -85,15 +85,17 @@ def vote_condition(request,num):
         for choice in choices:
             if max_count < choice.count:
                 max_count = choice.count
-        new_name = Choice.objects.get(count = max_count)
+        # filter를 통해서 투표수가 제일 많은 choice객체들을 모두 불러온다.
+        new_name = Choice.objects.filter(count = max_count)
+        # 그 객체가 1개 이상일 경우에는 값을 저장하지 않고 redirect 시킨다.
+        if (len(new_name) > 1):
+            return redirect('/detail/'+str(cat.pk))
+
         cat.name = str(new_name)
 
         vote = Vote.objects.get(cat_id=cat.id).delete()
 
-        # 값을 지울 때는 위에 두 줄이 아닌 아래 한 줄 처럼 해야한다. 왜그럴까...?
-        # delete_name = Choice.objects.get(vote_id=cat.vote.id, name=cat.name)
-        # delete_name.delete()
-        # Choice.objects.get(vote_id=cat.vote.id, name=cat.name).delete()
+        
 
     # 투표를 시작하면 voting을 True로 바꿔주고 현재 고양이의 이름도 투표 목록에 넣어준다.
     else:
@@ -136,7 +138,16 @@ def feed(request,num):
 def add_name(request, cat_id):
     cat = Cat.objects.get(id = cat_id)
     choice = Choice(vote_id = cat.vote.id)
+    choice_all = Choice.objects.filter(vote_id=cat.vote.id)
     choice.name = request.GET['add_name']
+    
+    # 투표에 이름 추가시 같은 이름 있을 경우 추가 안되게 하기
+    # 기존의 같은 이름이 있는지 확인해준다. 해당 투표에 선택받을 수 있는 이름을 다가져와 이를 순회하면서 입력 받은 값과 같으면 값을 저장하지 않고 redirect 시킨다.
+    for choice_one in choice_all:
+        # type(choice_one) 은 <class 'postapp.models.Choice'>
+        # type(choice.name) 은 <class 'str'> 이어서 형변환을 시켜서 비교해주었다.
+        if str(choice_one) == choice.name:
+            return redirect('/detail/'+str(cat.pk))
     choice.count = 0
     choice.save()
     return redirect('/detail/'+str(cat.pk))
