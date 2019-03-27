@@ -46,7 +46,13 @@ def detail(request,num):
         vote = Vote(cat_id=num)
         vote.save()
     # 해당 고양이의 vote 의 id 에 일치하는 고양이 후보이름만 가져온다.
-    choices = Choice.objects.filter(vote_id=cat.vote.id)
+    choices = list(Choice.objects.filter(vote_id=cat.vote.id))
+    print(type(choices))
+    choices_list= []
+    for choice in choices:
+        print(choice)
+    print(choices)
+    
 
     context={
         'cat': cat,

@@ -7,15 +7,39 @@
     alert("새 이름을 추가합니다.");
 }
 </script>
-<script>
+<!-- 성빈이의 예시 -->
+<!-- <script>
   function check_error(){
     const name=$("#newname_input");
     console.log(name.val())
     if(name.val().trim().length===0){
+      alert("이름을 입력하세요")
       console.log('no name error');
       $("#no_name_error").css("display","block");
     }else{
       $("#no_name_error").css("display","none");
+      $(newname_form).submit();
+    }
+  }
+</script> -->
+<script>
+  function check_error(){
+    const name=$("#newname_input");
+    console.log(name.val())
+
+    const cat_name = "{{ choices }}";
+    console.log(cat_name[0])
+    for (var name_one in cat_name){
+      console.log(name_one)
+    }
+    
+    console.log((cat_name))
+    
+    
+    if(name.val().trim().length===0){
+      alert("이름을 입력하세요");
+    }
+    else{
       $(newname_form).submit();
     }
   }
@@ -125,11 +149,11 @@
               <td><B>지지하기</B></td>
           </tr>
           </thead>
-          <!-- 기존에 있던 이름도 여기에 추가를 해주자.  -->
+          
          {% for choice in choices  %}
           <tbody>
             <tr>
-              <td>{{choice.name}}</td>
+              <td id="cat_name">{{choice.name}}</td>
               <td>{{choice.count}}</td>
               <td>
                   <form action = "{%url 'vote' vote.id%}" method="POST">
@@ -144,6 +168,7 @@
       <form id="newname_form" action="{% url 'add_name' cat.id%}">
         <input id="newname_input" type="text" name="add_name">
         <input onclick="check_error()" class="btn btn-secondary" value="새 이름 추가하기" style="width: 100px;">
+        
         <p id="no_name_error" style="display: none;">글씨입력하세요</p>
       </form>
       <input class ="btn btn-secondary" type="submit" value="js로 확인" onclick="AddName_click()">
