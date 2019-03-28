@@ -17,6 +17,7 @@
     }
   }
 </script> -->
+<!-- 투표 입력시 이름 미기재, 중복이름 처리 -->
 <script>
   function check_error() {
     const name = $("#newname_input");
@@ -152,6 +153,7 @@
           <td><B>이름</B></td>
           <td><B>투표수</B></td>
           <td><B>지지하기</B></td>
+          <td><B>삭제</B></td>
         </tr>
       </thead>
 
@@ -165,6 +167,9 @@
               {% csrf_token %}
               <button name="choice" value="{{choice.id}}">선택</button>
             </form>
+          </td>
+          <td>
+            <a href="{% url 'delete_choice' cat.id choice.id %}"><ion-icon name="trash"></ion-icon></a>
           </td>
         </tr>
       </tbody>

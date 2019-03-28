@@ -17,6 +17,7 @@ urlpatterns = [
     
     path('detail/<int:num>',postapp.views.detail, name='detail'),
     path('detail/<int:cat_id>/delete',postapp.views.delete, name='delete'), # 글 삭제
+    path('detail/<int:cat_id>/<int:choice_id>/delete', postapp.views.delete_choice, name='delete_choice'),
     path('detail/<int:cat_id>/edit', postapp.views.edit, name='edit'), # 글 수정
     path('feed/<int:num>',postapp.views.feed, name='feed'),
     path('votecondition/<int:num>',postapp.views.vote_condition, name='vote_condition'),

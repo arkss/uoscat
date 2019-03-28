@@ -189,3 +189,9 @@ def edit(request, cat_id):
         return render(request, 'postapp/edit_post.html',{'form':form})
 
     
+def delete_choice(request, cat_id, choice_id):
+    cat = Cat.objects.get(id=cat_id)
+    
+    choice = Choice.objects.get(vote_id=cat.vote.id, id=choice_id)
+    choice.delete()
+    return redirect('/detail/'+str(cat.id))
