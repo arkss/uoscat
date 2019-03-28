@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.core import serializers
 from django.contrib.auth import logout
 from .form import CatPost
+import json
 
 from .models import Cat,Choice, Vote
 # 메인화면
@@ -38,6 +39,8 @@ def newcat(request):
 def detail(request,num):
     cat=Cat.objects.get(pk=num)
     habitats=[pos.as_dict() for pos in cat.habitat_set.all()]
+    
+
     # vote가 없을 경우 예외 처리
     try:
         vote = Vote.objects.get(cat_id=num)
@@ -46,17 +49,14 @@ def detail(request,num):
         vote = Vote(cat_id=num)
         vote.save()
     # 해당 고양이의 vote 의 id 에 일치하는 고양이 후보이름만 가져온다.
-    choices = list(Choice.objects.filter(vote_id=cat.vote.id))
-    print(type(choices))
-    choices_list= []
-    for choice in choices:
-        print(choice)
-    print(choices)
-    
+    choices = (Choice.objects.filter(vote_id=cat.vote.id))
 
+    choices_name = [choice.as_dict() for choice in choices]
+    
     context={
         'cat': cat,
         'choices': choices,
+        'choices_name': choices_name,
         'vote': vote,
         'habitat_len': len(habitats),
         'pos': habitats,

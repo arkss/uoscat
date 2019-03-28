@@ -2,11 +2,6 @@
 {% block content %}
 {% load staticfiles %}
 
-<script>
-  function AddName_click() {
-    alert("새 이름을 추가합니다.");
-}
-</script>
 <!-- 성빈이의 예시 -->
 <!-- <script>
   function check_error(){
@@ -23,23 +18,26 @@
   }
 </script> -->
 <script>
-  function check_error(){
-    const name=$("#newname_input");
+  function check_error() {
+    const name = $("#newname_input");
     console.log(name.val())
 
-    const cat_name = "{{ choices }}";
-    console.log(cat_name[0])
-    for (var name_one in cat_name){
-      console.log(name_one)
+    const choices_string = "{{ choices_name }}".replace(/&#39;/g, "\"");;
+    const choices_name = JSON.parse(choices_string)
+  
+    for (var i = 0; i < choices_name.length; i++) {
+      const origin_name = choices_name[i]['name'];
+
+      if (name.val().trim() == origin_name) {
+        alert("이미 존재하는 이름입니다.");
+      } else {
+        $(newname_form).submit();
+      }
     }
-    
-    console.log((cat_name))
-    
-    
-    if(name.val().trim().length===0){
+
+    if (name.val().trim().length === 0) {
       alert("이름을 입력하세요");
-    }
-    else{
+    } else {
       $(newname_form).submit();
     }
   }
@@ -55,7 +53,8 @@
               <div style="display: flex; flex-direction: row; justify-content: space-between;">
                 <h4 style="margin-left: 25px;">귀여운 고양이구만</h4>
                 <div style="display: flex;">
-                  <a href="{% url 'delete' cat.id %}" style="margin-right: 10px;">Delete<ion-icon name="trash" ></ion-icon></a>
+                  <a href="{% url 'delete' cat.id %}" style="margin-right: 10px;">Delete<ion-icon name="trash">
+                    </ion-icon></a>
                   <a href="{% url 'edit' cat.id %}">Edit<ion-icon name="create"></ion-icon></a>
                 </div>
               </div>
@@ -87,20 +86,25 @@
                     <h4><i class="icon-48 icon-beaker"></i> Cat Info</h4>
                     <ul class="project-detail">
                       <li><label>고양이 이름 :</label> {{ cat.name }}</li>
-                      <li><label>마지막 식사 :</label> {{ cat.lasteat }} <a href="/feed/{{ cat.pk }}" class="btn btn-secondary">밥줬어요.</a></li>
+                      <li><label>마지막 식사 :</label> {{ cat.lasteat }} <a href="/feed/{{ cat.pk }}"
+                          class="btn btn-secondary">밥줬어요.</a></li>
                     </ul>
                   </div>
 
                   <div class="project-widget">
-                      <h4><i class="icon-48 icon-map-marker"></i> 서식지</h4>
-                      <form action="{% url 'addhabitat' num=cat.pk %}" method="post">
-                        {% csrf_token %}
-                        <ul class="project-detail">
-                          <li><label>발견지역들 클릭한 후 제출!</label><button type="submit" class="btn btn-secondary" style="margin-left:10px;">제출</button></li>
-                          <input id="position_string" type="text" name="position_string" style="display:none;">
-                          <li><div id="map" style="width:100%;height:300px;"></div><a onclick="removeCircles()" class="btn btn-secondary">변경내용 모두삭제</a></li>
-                        </ul>
-                      </form>
+                    <h4><i class="icon-48 icon-map-marker"></i> 서식지</h4>
+                    <form action="{% url 'addhabitat' num=cat.pk %}" method="post">
+                      {% csrf_token %}
+                      <ul class="project-detail">
+                        <li><label>발견지역들 클릭한 후 제출!</label><button type="submit" class="btn btn-secondary"
+                            style="margin-left:10px;">제출</button></li>
+                        <input id="position_string" type="text" name="position_string" style="display:none;">
+                        <li>
+                          <div id="map" style="width:100%;height:300px;"></div><a onclick="removeCircles()"
+                            class="btn btn-secondary">변경내용 모두삭제</a>
+                        </li>
+                      </ul>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -117,7 +121,8 @@
   <!-- kakao map -->
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=94d0a2f58c194ef47c239fd937aaaac4"></script>
   <script type="text/javascript">
-    const pos_string="{{pos}}".replace(/&#39;/g,"\"");
+    const pos_string = "{{pos}}".replace(/&#39;/g, "\"");
+    console.log(pos_string)
   </script>
   <script type="text/javascript" src="{%static 'kakaomap.js' %}"></script>
   <div class="vote">
@@ -139,40 +144,40 @@
       <a href="/votecondition/{{ cat.pk }}" class="btn btn-success">네</a>
     </div>
     {% else %}
-      <p>투표 진행중</p>
-      <!-- 이름 투표 테이블 -->
-      <table class="table table-striped">
-          <thead>
-          <tr>
-              <td><B>이름</B></td>
-              <td><B>투표수</B></td>
-              <td><B>지지하기</B></td>
-          </tr>
-          </thead>
-          
-         {% for choice in choices  %}
-          <tbody>
-            <tr>
-              <td id="cat_name">{{choice.name}}</td>
-              <td>{{choice.count}}</td>
-              <td>
-                  <form action = "{%url 'vote' vote.id%}" method="POST">
-                    {% csrf_token %}
-                      <button name="choice" value="{{choice.id}}">선택</button>
-                  </form>
-              </td>
-            </tr>
-          </tbody>
-          {% endfor %}
-      </table>
-      <form id="newname_form" action="{% url 'add_name' cat.id%}">
-        <input id="newname_input" type="text" name="add_name">
-        <input onclick="check_error()" class="btn btn-secondary" value="새 이름 추가하기" style="width: 100px;">
-        
-        <p id="no_name_error" style="display: none;">글씨입력하세요</p>
-      </form>
-      <input class ="btn btn-secondary" type="submit" value="js로 확인" onclick="AddName_click()">
-      <a href="/votecondition/{{cat.pk}}" class="btn btn-success">투표 종료</a>
+    <p>투표 진행중</p>
+    <!-- 이름 투표 테이블 -->
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <td><B>이름</B></td>
+          <td><B>투표수</B></td>
+          <td><B>지지하기</B></td>
+        </tr>
+      </thead>
+
+      {% for choice in choices  %}
+      <tbody>
+        <tr>
+          <td id="cat_name">{{choice.name}}</td>
+          <td>{{choice.count}}</td>
+          <td>
+            <form action="{%url 'vote' vote.id%}" method="POST">
+              {% csrf_token %}
+              <button name="choice" value="{{choice.id}}">선택</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+    <form id="newname_form" action="{% url 'add_name' cat.id%}">
+      <input id="newname_input" type="text" name="add_name">
+      <input onclick="check_error()"  class="btn btn-secondary" value="새 이름 추가하기" style="width: 100px;">
+
+      <p id="no_name_error" style="display: none;">글씨입력하세요</p>
+    </form>
+
+    <a href="/votecondition/{{cat.pk}}" class="btn btn-success">투표 종료</a>
     {% endif %}
   </div>
 </div>
