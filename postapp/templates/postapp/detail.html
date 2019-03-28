@@ -25,17 +25,19 @@
 
     const choices_string = "{{ choices_name }}".replace(/&#39;/g, "\"");
     const choices_name = JSON.parse(choices_string)
-  
-    for (var i = 0; i < choices_name.length; i++) {
-      const origin_name = choices_name[i]['name'];
-
-      if (name.val().trim() == origin_name) {
+    choices_name.map(function (choice) {
+      console.log(choice)
+      console.log(name.val().trim())
+      if (name.val().trim() == choice['name']) {
         alert("이미 존재하는 이름입니다.");
       } else {
         $(newname_form).submit();
       }
-    }
 
+      // for (var i=0;i<1000000000000000;i++){
+        
+      // }
+    })
     if (name.val().trim().length === 0) {
       alert("이름을 입력하세요");
     } else {
@@ -44,11 +46,11 @@
   }
 </script>
 <script>
-  function count_overlap(){
+  function count_overlap() {
     const max_name_string = "{{max_name}}".replace(/&#39;/g, "\"");
     const max_name = JSON.parse(max_name_string);
     console.log(max_name);
-    if (max_name.length > 1){
+    if (max_name.length > 1) {
       alert("동일 표가 있습니다.");
     } else {
       location.replace("/votecondition/{{cat.pk}}");
@@ -181,7 +183,9 @@
             </form>
           </td>
           <td>
-            <a href="{% url 'delete_choice' cat.id choice.id %}"><ion-icon name="trash"></ion-icon></a>
+            <a href="{% url 'delete_choice' cat.id choice.id %}">
+              <ion-icon name="trash"></ion-icon>
+            </a>
           </td>
         </tr>
       </tbody>
