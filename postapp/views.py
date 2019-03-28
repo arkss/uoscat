@@ -6,6 +6,8 @@ from django.contrib.auth import logout
 from .form import CatPost
 import json
 
+from django.views.decorators.csrf import csrf_exempt #csrf 귀찮아.
+
 from .models import Cat,Choice, Vote
 # 메인화면
 def home(request):
@@ -39,7 +41,7 @@ def newcat(request):
 def detail(request,num):
     cat=Cat.objects.get(pk=num)
     habitats=[pos.as_dict() for pos in cat.habitat_set.all()]
-    
+
 
     # vote가 없을 경우 예외 처리
     try:
@@ -53,7 +55,7 @@ def detail(request,num):
 
     choices_name = [choice.as_dict() for choice in choices]
 
-    
+
     max_count = 0
     for choice in choices:
         if max_count < choice.count:
@@ -61,10 +63,11 @@ def detail(request,num):
     # filter를 통해서 투표수가 제일 많은 choice객체들을 모두 불러온다.
     max_name = Choice.objects.filter(vote_id=cat.vote.id, count = max_count)
     max_name = [name.as_dict() for name in max_name]
-    
+
     context={
         'cat': cat,
         'choices': choices,
+        'choices_exist': len(choices)>0,
         'choices_name': choices_name,
         'vote': vote,
         'habitat_len': len(habitats),
@@ -109,11 +112,11 @@ def vote_condition(request,num):
             return redirect('/detail/'+str(cat.pk))
 
         cat.name = new_name[0].as_str()
-        
+
 
         vote = Vote.objects.get(cat_id=cat.id).delete()
 
-        
+
 
     # 투표를 시작하면 voting을 True로 바꿔주고 현재 고양이의 이름도 투표 목록에 넣어준다.
     else:
@@ -125,12 +128,12 @@ def vote_condition(request,num):
     cat.save()
     return redirect('/detail/'+str(cat.pk))
 
-
+@csrf_exempt
 def vote(request, vote_id):
-
     # cat = Cat.objects.get(pk=cat_id)
     vote = Vote.objects.get(pk=vote_id)
     # 이따 프론트에서 이 값으로 투표할 이름을 가져오게끔 하자.
+    print(request.POST)
     selection = request.POST['choice']
 
     try:
@@ -153,13 +156,14 @@ def feed(request,num):
 
 
 # 새로운 이름 투표에 이름 추가해주기
+@csrf_exempt
 def add_name(request, cat_id):
     cat = Cat.objects.get(id = cat_id)
     choice = Choice(vote_id = cat.vote.id)
     choice_all = Choice.objects.filter(vote_id=cat.vote.id)
     # 입력 시 공백문자를 무시하고 가져온다.
-    choice.name = request.GET['add_name'].strip()
-    
+    choice.name = request.POST['add_name'].strip()
+
     # 투표에 이름 추가시 같은 이름 있을 경우 추가 안되게 하기
     # 기존의 같은 이름이 있는지 확인해준다. 해당 투표에 선택받을 수 있는 이름을 다가져와 이를 순회하면서 입력 받은 값과 같으면 값을 저장하지 않고 redirect 시킨다.
     for choice_one in choice_all:
@@ -194,7 +198,7 @@ def edit(request, cat_id):
             cat.body = form.cleaned_data['body']
             cat.save()
             return redirect('/detail/'+str(cat.pk))
-        
+
     # 수정사항을 입력하기 위해 페이지에 처음 접속했을 때
     else:
         form = CatPost()

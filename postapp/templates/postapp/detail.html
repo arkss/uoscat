@@ -2,41 +2,21 @@
 {% block content %}
 {% load staticfiles %}
 
-<!-- 성빈이의 예시 -->
-<!-- <script>
-  function check_error(){
-    const name=$("#newname_input");
-    console.log(name.val())
-    if(name.val().trim().length===0){
-      alert("이름을 입력하세요")
-      console.log('no name error');
-      $("#no_name_error").css("display","block");
-    }else{
-      $("#no_name_error").css("display","none");
-      $(newname_form).submit();
-    }
-  }
-</script> -->
 <!-- 투표 입력시 이름 미기재, 중복이름 처리 -->
 <script>
   function check_error() {
     const name = $("#newname_input");
-    console.log(name.val())
+    // console.log(name.val())
 
     const choices_string = "{{ choices_name }}".replace(/&#39;/g, "\"");
     const choices_name = JSON.parse(choices_string)
-    choices_name.map(function (choice) {
-      console.log(choice)
-      console.log(name.val().trim())
+    //arow function
+    choices_name.map((choice)=>{
       if (name.val().trim() == choice['name']) {
         alert("이미 존재하는 이름입니다.");
       } else {
         $(newname_form).submit();
       }
-
-      // for (var i=0;i<1000000000000000;i++){
-        
-      // }
     })
     if (name.val().trim().length === 0) {
       alert("이름을 입력하세요");
@@ -49,7 +29,7 @@
   function count_overlap() {
     const max_name_string = "{{max_name}}".replace(/&#39;/g, "\"");
     const max_name = JSON.parse(max_name_string);
-    console.log(max_name);
+    // console.log(max_name);
     if (max_name.length > 1) {
       alert("동일 표가 있습니다.");
     } else {
@@ -66,7 +46,10 @@
           <div class="span12">
             <article>
               <div style="display: flex; flex-direction: row; justify-content: space-between;">
-                <h4 style="margin-left: 25px;">귀여운 고양이구만</h4>
+                <div style="display: flex">
+                  <h4 style="margin-left: 25px;margin-top: 5px;">귀여운 고양이구만</h4>
+                  {% if cat.voting %}<div id="app" style="margin-left: 15px;"></div>{%endif%}
+                </div>
                 <div style="display: flex;">
                   <a href="{% url 'delete' cat.id %}" style="margin-right: 10px;">Delete<ion-icon name="trash">
                     </ion-icon></a>
@@ -137,7 +120,7 @@
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=94d0a2f58c194ef47c239fd937aaaac4"></script>
   <script type="text/javascript">
     const pos_string = "{{pos}}".replace(/&#39;/g, "\"");
-    console.log(pos_string)
+    // console.log(pos_string)
   </script>
   <script type="text/javascript" src="{%static 'kakaomap.js' %}"></script>
   <div class="vote">
@@ -203,4 +186,29 @@
     {% endif %}
   </div>
 </div>
+
+<!-- choices to json -->
+<script>
+  {% if choices_exist %}
+  const str="[{% for choice in choices %}{\"name\":\"{{choice.name}}\",\"id\":{{choice.id}},\"count\":{{choice.count}},\"vote_url\":\"{%url 'vote' vote.id%}\",\"delete_url\":\"{%url 'delete_choice' cat.id choice.id %}\"},{%endfor%}]";
+  {% else %}
+  const str='';
+  {% endif %}
+  const add_url="{% url 'add_name' cat.id%}";
+</script>
+<script type="text/javascript" src="{%static './choices_voting.js' %}"></script>
+
+<!-- add react -->
+<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- axios -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- components -->
+<script type="text/babel" src="{%static 'components/Board.js'%}"></script>
+<script type="text/babel" src="{%static 'components/FormDialog.js'%}"></script>
+<script type="text/babel" src="{%static 'components/DOM_render.js'%}"></script>
+<!-- material ui -->
+<script src="https://unpkg.com/@material-ui/core/umd/material-ui.production.min.js" crossorigin="anonymous"></script>
+
 {% endblock %}
