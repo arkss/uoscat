@@ -36,6 +36,9 @@ class Choice(models.Model):
     def as_dict(self):
         return {'name':self.name}
 
+    def as_str(self):
+        return self.name
+
 class Habitat(models.Model):
     x=models.FloatField(blank=False)
     y=models.FloatField(blank=False)

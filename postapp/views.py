@@ -49,9 +49,18 @@ def detail(request,num):
         vote = Vote(cat_id=num)
         vote.save()
     # 해당 고양이의 vote 의 id 에 일치하는 고양이 후보이름만 가져온다.
-    choices = (Choice.objects.filter(vote_id=cat.vote.id))
+    choices = Choice.objects.filter(vote_id=cat.vote.id)
 
     choices_name = [choice.as_dict() for choice in choices]
+
+    
+    max_count = 0
+    for choice in choices:
+        if max_count < choice.count:
+            max_count = choice.count
+    # filter를 통해서 투표수가 제일 많은 choice객체들을 모두 불러온다.
+    max_name = Choice.objects.filter(vote_id=cat.vote.id, count = max_count)
+    max_name = [name.as_dict() for name in max_name]
     
     context={
         'cat': cat,
@@ -61,6 +70,7 @@ def detail(request,num):
         'habitat_len': len(habitats),
         'pos': habitats,
         'now': 'detail',
+        'max_name': max_name,
     }
     return render(request,'postapp/detail.html',context)
 
@@ -92,12 +102,14 @@ def vote_condition(request,num):
             if max_count < choice.count:
                 max_count = choice.count
         # filter를 통해서 투표수가 제일 많은 choice객체들을 모두 불러온다.
-        new_name = Choice.objects.filter(count = max_count)
+        new_name = Choice.objects.filter(vote_id=cat.vote.id, count = max_count)
+
         # 그 객체가 1개 이상일 경우에는 값을 저장하지 않고 redirect 시킨다.
         if (len(new_name) > 1):
             return redirect('/detail/'+str(cat.pk))
 
-        cat.name = str(new_name)
+        cat.name = new_name[0].as_str()
+        
 
         vote = Vote.objects.get(cat_id=cat.id).delete()
 
@@ -188,10 +200,9 @@ def edit(request, cat_id):
         form = CatPost()
         return render(request, 'postapp/edit_post.html',{'form':form})
 
-    
+# 투표 이름 삭제
 def delete_choice(request, cat_id, choice_id):
     cat = Cat.objects.get(id=cat_id)
-    
     choice = Choice.objects.get(vote_id=cat.vote.id, id=choice_id)
     choice.delete()
     return redirect('/detail/'+str(cat.id))

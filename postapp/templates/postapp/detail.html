@@ -23,7 +23,7 @@
     const name = $("#newname_input");
     console.log(name.val())
 
-    const choices_string = "{{ choices_name }}".replace(/&#39;/g, "\"");;
+    const choices_string = "{{ choices_name }}".replace(/&#39;/g, "\"");
     const choices_name = JSON.parse(choices_string)
   
     for (var i = 0; i < choices_name.length; i++) {
@@ -40,6 +40,18 @@
       alert("이름을 입력하세요");
     } else {
       $(newname_form).submit();
+    }
+  }
+</script>
+<script>
+  function count_overlap(){
+    const max_name_string = "{{max_name}}".replace(/&#39;/g, "\"");
+    const max_name = JSON.parse(max_name_string);
+    console.log(max_name);
+    if (max_name.length > 1){
+      alert("동일 표가 있습니다.");
+    } else {
+      location.replace("/votecondition/{{cat.pk}}");
     }
   }
 </script>
@@ -182,7 +194,8 @@
       <p id="no_name_error" style="display: none;">글씨입력하세요</p>
     </form>
 
-    <a href="/votecondition/{{cat.pk}}" class="btn btn-success">투표 종료</a>
+    <!-- <a href="/votecondition/{{cat.pk}}" class="btn btn-success" onclick="count_overlap()">투표 종료</a> -->
+    <a href="#" class="btn btn-success" onclick="count_overlap()">투표 종료</a>
     {% endif %}
   </div>
 </div>
