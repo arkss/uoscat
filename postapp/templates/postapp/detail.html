@@ -21,13 +21,11 @@
 <script>
   function check_error() {
     const name = $("#newname_input");
-    console.log(name.val())
 
     const choices_string = "{{ choices_name }}".replace(/&#39;/g, "\"");
-    const choices_name = JSON.parse(choices_string)
-    choices_name.map(function (choice) {
-      console.log(choice)
-      console.log(name.val().trim())
+    const choices_name = JSON.parse(choices_string);
+    console.log(choices_name);
+    choices_name.map((choice) => {
       if (name.val().trim() == choice['name']) {
         alert("이미 존재하는 이름입니다.");
       } else {
@@ -35,7 +33,7 @@
       }
 
       // for (var i=0;i<1000000000000000;i++){
-        
+
       // }
     })
     if (name.val().trim().length === 0) {
