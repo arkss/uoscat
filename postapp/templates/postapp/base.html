@@ -6,6 +6,7 @@
 
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,15 +24,20 @@
   <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
   <link href="{% static 'css/docs.css' %}" rel="stylesheet">
   <link href="{% static 'css/prettyPhoto.css' %}" rel="stylesheet">
-  <link href="{% static 'css/comment.css' %}" rel="stylesheet" >
+  <link href="{% static 'css/comment.css' %}" rel="stylesheet">
   <link href="{% static 'js/google-code-prettify/prettify.css' %}" rel="stylesheet">
   <link href="{% static 'css/style.css' %}" rel="stylesheet">
   <link href="{% static 'color/default.css' %}" rel="stylesheet">
+
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+
 
   <!--  ionicons -->
   <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
 
 </head>
+
 <body>
   <div id="main">
     <header style="margin-bottom: 100px;">
@@ -40,8 +46,8 @@
           <div class="container">
             <!-- logo -->
             <a class="brand logo" href="{% url 'home' %}">
-      			  <h1>UOSCAT</h1>
-      			</a>
+              <h1>UOSCAT</h1>
+            </a>
             <!-- end logo -->
             <!-- top menu -->
             <div class="navigation">
@@ -61,9 +67,9 @@
                   </li>
                   <li class="dropdown">
                     {% if user.is_authenticated %}
-                      <a href="/my_logout/">LogOut</a>
+                    <a href="/my_logout/">LogOut</a>
                     {% else %}
-                      <a href="{% provider_login_url 'google' %}">LogIn</a>
+                    <a href="{% provider_login_url 'google' %}">LogIn</a>
                     {% endif %}
                   </li>
                 </ul>
@@ -97,4 +103,5 @@
   <!-- Template Custom JavaScript File -->
   <script src="{% static 'js/custom.js' %}"></script>
 </body>
+
 </html>
