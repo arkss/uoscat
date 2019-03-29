@@ -49,3 +49,11 @@ class Habitat(models.Model):
 
     def as_dict(self):
         return {'x':self.x,'y':self.y}
+
+class Comment(models.Model):
+    cat = models.ForeignKey(Cat, on_delete=models.CASCADE, null=True)
+    comment_date =models.DateTimeField(auto_now_add=True)
+    comment_contents = models.CharField(max_length=200)
+     
+    def __str__(self):
+        return self.comment_contents

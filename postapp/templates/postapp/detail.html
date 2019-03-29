@@ -11,7 +11,7 @@
     const choices_string = "{{ choices_name }}".replace(/&#39;/g, "\"");
     const choices_name = JSON.parse(choices_string)
     //arow function
-    choices_name.map((choice)=>{
+    choices_name.map((choice) => {
       if (name.val().trim() == choice['name']) {
         alert("이미 존재하는 이름입니다.");
       } else {
@@ -185,16 +185,49 @@
     <a href="#" class="btn btn-success" onclick="count_overlap()">투표 종료</a>
     {% endif %}
   </div>
+  <br><br>
+  <form action="{% url 'comment_write' cat.id %}" method="POST">
+    {% csrf_token %}
+    <!-- <input type="text" name="content" placeholder="댓글을 입력하세요." style="width:800px;height:200px;"> -->
+    <textarea name="content" cols="150" rows="4" placeholder="댓글을 입력하세요." style="resize:none;width:90%;"></textarea>
+    <input type="submit" value="댓글쓰기">
+  </form>
+  
+  
+
+  {% for comment in cat.comment_set.all %}
+  <div class="row">
+      <div class="col-sm-6">
+        <div class="comment">
+          <div class="comment-body">
+            <div class="comment-content">
+              <div class="comment-content-first-row">
+                  <div><ion-icon name="contact"></ion-icon></div>
+                  <h5 class="comment-title">유저이름</h5>
+              </div>
+                <h6>{{comment.comment_date}}</h6>
+                <p class="comment-text">{{comment.comment_contents}}</p>
+            </div>
+            <div class="comment-delete">
+                <a href="{% url 'comment_delete' cat.id comment.id %}"><ion-icon name="close"></ion-icon></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    {% endfor %}
 </div>
 
 <!-- choices to json -->
 <script>
   {% if choices_exist %}
-  const str="[{% for choice in choices %}{\"name\":\"{{choice.name}}\",\"id\":{{choice.id}},\"count\":{{choice.count}},\"vote_url\":\"{%url 'vote' vote.id%}\",\"delete_url\":\"{%url 'delete_choice' cat.id choice.id %}\"},{%endfor%}]";
+  const str =
+    "[{% for choice in choices %}{\"name\":\"{{choice.name}}\",\"id\":{{choice.id}},\"count\":{{choice.count}},\"vote_url\":\"{%url 'vote' vote.id%}\",\"delete_url\":\"{%url 'delete_choice' cat.id choice.id %}\"},{%endfor%}]"; 
   {% else %}
-  const str='';
+  const str = ''; 
   {% endif %}
-  const add_url="{% url 'add_name' cat.id%}";
+  const add_url = "{% url 'add_name' cat.id%}";
 </script>
 <script type="text/javascript" src="{%static './choices_voting.js' %}"></script>
 

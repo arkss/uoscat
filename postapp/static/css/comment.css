@@ -1,0 +1,13 @@
+.comment-body{
+    display: flex;
+    justify-content: space-between;
+}
+
+.comment-delete{
+    display: flex;
+    align-items: center;
+}
+
+.comment-content-first-row{
+    display: flex;
+}

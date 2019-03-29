@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.core import serializers
@@ -8,7 +8,7 @@ import json
 
 from django.views.decorators.csrf import csrf_exempt #csrf 귀찮아.
 
-from .models import Cat,Choice, Vote
+from .models import Cat,Choice, Vote, Comment
 # 메인화면
 def home(request):
     cats=Cat.objects.all()
@@ -210,4 +210,22 @@ def delete_choice(request, cat_id, choice_id):
     cat = Cat.objects.get(id=cat_id)
     choice = Choice.objects.get(vote_id=cat.vote.id, id=choice_id)
     choice.delete()
+    return redirect('/detail/'+str(cat.id))
+
+# 댓글 등록
+def comment_write(request, cat_id):
+    if request.method == "POST":
+        cat = get_object_or_404(Cat, pk=cat_id)
+        content = request.POST.get('content')
+        Comment.objects.create(cat=cat, comment_contents=content)
+        return redirect('/detail/'+str(cat.id))
+    return render(request, 'postapp/home.html')
+
+def comment_delete(request, cat_id, comment_id):
+    print('#########################')
+    print(cat_id, comment_id)
+    cat = Cat.objects.get(id=cat_id)
+    print(cat)
+    comment = Comment.objects.get(id=comment_id)
+    comment.delete()
     return redirect('/detail/'+str(cat.id))
