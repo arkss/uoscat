@@ -52,7 +52,7 @@ class Habitat(models.Model):
 
 class Comment(models.Model):
     cat = models.ForeignKey(Cat, on_delete=models.CASCADE, null=True)
-    comment_date =models.DateTimeField(auto_now_add=True)
+    comment_date =models.DateTimeField(auto_now_add=True) # add_now_add 는 등록시 현재시간으로 추가함
     comment_contents = models.CharField(max_length=200)
      
     def __str__(self):
