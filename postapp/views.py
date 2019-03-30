@@ -5,6 +5,7 @@ from django.core import serializers
 from django.contrib.auth import logout
 from .form import CatPost
 import json
+import datetime
 
 from django.views.decorators.csrf import csrf_exempt #csrf 귀찮아.
 
@@ -54,9 +55,7 @@ def detail(request,num):
     choices = Choice.objects.filter(vote_id=cat.vote.id)
 
     choices_name = [choice.as_dict() for choice in choices]
-    print(choices_name)
-
-
+    
     max_count = 0
     for choice in choices:
         if max_count < choice.count:
@@ -221,11 +220,9 @@ def comment_write(request, cat_id):
         return redirect('/detail/'+str(cat.id))
     return render(request, 'postapp/home.html')
 
+# 댓글 삭제
 def comment_delete(request, cat_id, comment_id):
-    print('#########################')
-    print(cat_id, comment_id)
     cat = Cat.objects.get(id=cat_id)
-    print(cat)
     comment = Comment.objects.get(id=comment_id)
     comment.delete()
     return redirect('/detail/'+str(cat.id))
