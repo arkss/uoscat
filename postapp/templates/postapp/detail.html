@@ -45,9 +45,8 @@
         <div class="row">
           <div class="span12">
             <article>
-              <div style="display: flex; flex-direction: row; justify-content: space-between;">
+              <div class="cat_delete_edit_bar">
                 <div style="display: flex">
-                  <h4 style="margin-left: 25px;margin-top: 5px;">귀여운 고양이구만</h4>
                   {% if cat.voting %}<div id="app" style="margin-left: 15px;"></div>{%endif%}
                 </div>
                 <div style="display: flex;">
@@ -59,32 +58,35 @@
               <div class="clearfix">
               </div>
               <div class="row">
-                <div class="span8">
-                  <!-- start flexslider -->
-                  <div class="flexslider">
-                    <ul class="slides">
-                      <li>
-                        <img src="{{ cat.image.url }}" alt="" />
-                      </li>
-                      <!-- <li>
-                        <img src="assets/img/slides/flexslider/img2.jpg" alt="" />
-                      </li>
-                      <li>
-                        <img src="assets/img/slides/flexslider/img3.jpg" alt="" />
-                      </li> -->
-                    </ul>
+                <div class="span8 cat-info-left">
+                  <div class="cat_image_container">
+                    <img class="cat_image" src="{{ cat.image.url }}" alt="" />
                   </div>
-                  <!-- end flexslider -->
-                  <p style="margin-left: 25px;">
-                    {{cat.body}}
-                  </p>
+                  <div class="project-widget">
+                      <h4><ion-icon name="pricetags"></ion-icon>Name: {{cat.name}} </h4>
+                      <ul class="project-detail">
+                        <li></li>
+                      </ul>
+                  </div>
+                  <div class="project-widget cat-body-container">
+                      <h4><ion-icon name="information-circle-outline"></ion-icon> Cat Info</h4>
+                      <ul class="project-detail">
+                        <li>
+                          <div class="cat-body">
+                            {{cat.body}}
+                          </div>
+                        </li>
+                      </ul>
+                  </div>
+                  
+                </div>
+                <div>
                 </div>
                 <div class="span4">
-                  <div class="project-widget">
+                  <div class="project-widget ">
                     <h4><i class="icon-48 icon-beaker"></i> Cat Info</h4>
                     <ul class="project-detail">
-                      <li><label>고양이 이름 :</label> {{ cat.name }}</li>
-                      <li><label>마지막 식사 :</label> {{ cat.lasteat }} <a href="/feed/{{ cat.pk }}"
+                      <li><label>마지막 식사 :</label> {{ cat.lasteat | date:'Y-m-d H:i' }} <a href="/feed/{{ cat.pk }}"
                           class="btn btn-secondary">밥줬어요.</a></li>
                     </ul>
                   </div>
@@ -103,6 +105,12 @@
                         </li>
                       </ul>
                     </form>
+                  </div>
+                  <div class="project-widget ">
+                      <h4><ion-icon name="checkmark-circle-outline"></ion-icon> Name Vote</h4>
+                      <ul class="project-detail">
+                        <li>성빈아 여기는 너가 해줘야해 어느 정도 공간이 필요할지 몰라서 너가 넣으면 높이 다시 맞출께</li>
+                      </ul>
                   </div>
                 </div>
               </div>
@@ -192,48 +200,55 @@
     <textarea name="content" cols="150" rows="4" placeholder="댓글을 입력하세요." style="resize:none;width:90%;"></textarea>
     <input type="submit" value="댓글쓰기">
   </form>
-  
-  
+
+
 
   {% for comment in cat.comment_set.all %}
   <div class="row">
-      <div class="col-sm-6">
-        <div class="comment">
-          <div class="comment-body">
-            <div class="comment-content">
-              <div class="comment-content-first-row">
-                  <div><ion-icon name="contact"></ion-icon></div>
-                  <h5 class="comment-title">유저이름</h5>
+    <div class="col-sm-6">
+      <div class="comment">
+        <div class="comment-body">
+          <div class="comment-content">
+            <div class="comment-content-first-row">
+              <div>
+                <ion-icon name="contact" style="width:20px;height:20px;margin-top:4px;"></ion-icon>
               </div>
-                <h6>{{comment.comment_date}}</h6>
-                <p class="comment-text">{{comment.comment_contents}}</p>
+              <h5 class="comment-title">유저이름</h5>
             </div>
-            <div class="comment-delete">
-                <a href="{% url 'comment_delete' cat.id comment.id %}"><ion-icon name="close"></ion-icon></a>
-            </div>
+            <h6>{{comment.comment_date | date:'Y-m-d'}}</h6>
+            <p class="comment-text">{{comment.comment_contents}}</p>
+          </div>
+          <div class="comment-delete">
+            <a href="{% url 'comment_delete' cat.id comment.id %}">
+              <ion-icon name="close"></ion-icon>
+            </a>
           </div>
         </div>
       </div>
     </div>
-    <hr>
-    {% endfor %}
+  </div>
+  <hr>
+  {% endfor %}
 </div>
 
 <!-- choices to json -->
 <script>
-  {% if choices_exist %}
-  const str =
-    "[{% for choice in choices %}{\"name\":\"{{choice.name}}\",\"id\":{{choice.id}},\"count\":{{choice.count}},\"vote_url\":\"{%url 'vote' vote.id%}\",\"delete_url\":\"{%url 'delete_choice' cat.id choice.id %}\"},{%endfor%}]"; 
-  {% else %}
-  const str = ''; 
-  {% endif %}
-  const add_url = "{% url 'add_name' cat.id%}";
-</script>
+    {% if choices_exist %}
+    
+    const str =
+      "[{% for choice in choices %}{\"name\":\"{{choice.name}}\",\"id\":{{choice.id}},\"count\":{{choice.count}},\"vote_url\":\"{%url 'vote' vote.id%}\",\"delete_url\":\"{%url 'delete_choice' cat.id choice.id %}\"},{%endfor%}]"; 
+    {% else %}
+    const str = ''; 
+    {% endif %}
+    const add_url = "{% url 'add_name' cat.id%}";
+  </script>
+
 <script type="text/javascript" src="{%static './choices_voting.js' %}"></script>
 
 <!-- add react -->
-<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <!-- axios -->
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

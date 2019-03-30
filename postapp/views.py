@@ -64,26 +64,6 @@ def detail(request,num):
     max_name = Choice.objects.filter(vote_id=cat.vote.id, count = max_count)
     max_name = [name.as_dict() for name in max_name]
 
-
-    # 댓글에 사용할 날짜를 원하는 폼으로 바꿔준다.
-    print("########@@@@@@@@@")
-    comments = Comment.objects.all()
-    for comment in comments:
-        origin_date = comment.comment_date
-        new_date = origin_date.strftime('%Y-%m-%d')
-        print(new_date)
-        comment.comment_date = new_date
-        comment.save()
-
-    # for comment in cat.comment_set.all:
-    #     print("##############")
-    #     print(comment)
-    # now = datetime.datetime.now()
-    # cat.comment
-    # print("###################")
-    # print(now)
-    # nowDate = now.strftime('%Y-%m-%d')
-    # print(nowDate)
     context={
         'cat': cat,
         'choices': choices,

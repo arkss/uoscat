@@ -1,0 +1,32 @@
+.cat_image {
+    width: 100%;
+    height: 545px;
+}
+
+.cat_image_container {
+    overflow : hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 30px;
+}
+
+.cat_delete_edit_bar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 8px 0 8px 0;
+}
+
+.cat-body-container{
+    overflow: scroll;
+    height: 150px;
+    /* height: 10%; */
+}
+
+.cat-body{
+    overflow: scroll;
+    height:100px;
+    word-wrap: break-word;
+    
+}
