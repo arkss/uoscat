@@ -54,7 +54,7 @@ def detail(request,num):
     choices = Choice.objects.filter(vote_id=cat.vote.id)
 
     choices_name = [choice.as_dict() for choice in choices]
-    print(choices_name)
+    # print(choices_name)
 
 
     max_count = 0

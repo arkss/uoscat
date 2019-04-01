@@ -56,12 +56,14 @@
                   <li class="dropdown {% ifequal now 'home'%}active{%endifequal%}">
                     <a href="{% url 'home' %}">Home</a>
                   </li>
-                  <li class="dropdown {% ifequal now 'detail' %}active{%endifequal%}">
+                  {% ifequal now 'detail' %}
+                  <li class="dropdown active">
                     <a href="#">Detail</a>
                     <!-- <ul class="dropdown-menu">
                       <li><a href="#">About us</a></li>
                     </ul> -->
                   </li>
+                  {%endifequal%}
                   <li class="dropdown {% ifequal now 'newcat'%}active{%endifequal%}">
                     <a href="{%url 'newcat' %}">글쓰기</a>
                   </li>
