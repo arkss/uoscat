@@ -200,7 +200,7 @@
     <textarea name="content" cols="150" rows="4" placeholder="댓글을 입력하세요." style="resize:none;width:90%;"></textarea>
     <input type="submit" value="댓글쓰기">
   </form>
-  
+
 
   {% for comment in cat.comment_set.all %}
   <div class="row">
@@ -209,6 +209,7 @@
         <div class="comment-body">
           <div class="comment-content">
             <div class="comment-content-first-row">
+<<<<<<< HEAD
               <div>
                 <ion-icon name="contact" style="width:20px;height:20px;margin-top:4px;"></ion-icon>
               </div>
@@ -221,6 +222,16 @@
             <a href="{% url 'comment_delete' cat.id comment.id %}">
               <ion-icon name="close"></ion-icon>
             </a>
+=======
+                <div><ion-icon name="contact"></ion-icon></div>
+                <h5 class="comment-title">유저이름</h5>
+            </div>
+              <h6>{{comment.comment_date}}</h6>
+              <p class="comment-text">{{comment.comment_contents}}</p>
+          </div>
+          <div class="comment-delete">
+              <a href="{% url 'comment_delete' cat.id comment.id %}"><ion-icon name="close"></ion-icon></a>
+>>>>>>> sungbin
           </div>
         </div>
       </div>
@@ -232,6 +243,7 @@
 
 <!-- choices to json -->
 <script>
+<<<<<<< HEAD
     {% if choices_exist %}
     
     const str =
@@ -242,6 +254,16 @@
     const add_url = "{% url 'add_name' cat.id%}";
   </script>
 
+=======
+  {% if choices_exist %}
+  const str =
+    "[{% for choice in choices %}{\"name\":\"{{choice.name}}\",\"id\":{{choice.id}},\"count\":{{choice.count}},\"vote_url\":\"{%url 'vote' vote.id%}\",\"delete_url\":\"{%url 'delete_choice' cat.id choice.id %}\"},{%endfor%}]";
+  {% else %}
+  const str = '';
+  {% endif %}
+  const add_url = "{% url 'add_name' cat.id%}";
+</script>
+>>>>>>> sungbin
 <script type="text/javascript" src="{%static './choices_voting.js' %}"></script>
 
 <!-- add react -->
