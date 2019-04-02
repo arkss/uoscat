@@ -2,6 +2,19 @@
 {% block content %}
 {% load staticfiles %}
 
+<!-- 고양이 및 댓글 삭제 시 modal 창에서 '삭제하기' -->
+<script>
+  function CatDelete() {
+    location.replace("/detail/{{cat.pk}}/delete");
+  }
+  
+  function CommentDelete(){
+    var comment_id = $('.hidden_comment_id').text();
+    console.log(comment_id);
+    location.replace("/detail/{{cat.pk}}/commentdelete/"+comment_id);
+  }
+
+</script>
 <!-- 투표 입력시 이름 미기재, 중복이름 처리 -->
 <script>
   function check_error() {
@@ -50,8 +63,12 @@
                   {% if cat.voting %}<div id="app" style="margin-left: 15px;"></div>{%endif%}
                 </div>
                 <div style="display: flex;">
-                  <a href="{% url 'delete' cat.id %}" style="margin-right: 10px;">Delete<ion-icon name="trash">
-                    </ion-icon></a>
+                  <!-- <a href="{% url 'delete' cat.id %}" style="margin-right: 10px;">Delete<ion-icon name="trash"></ion-icon></a> -->
+                  <a href="#" data-toggle="modal"
+                  data-target="#CatModal"  style="margin-right: 10px;">Delete<ion-icon name="trash"></ion-icon></a>
+                  
+
+
                   <a href="{% url 'edit' cat.id %}">Edit<ion-icon name="create"></ion-icon></a>
                 </div>
               </div>
@@ -215,11 +232,15 @@
               </div>
               <h5 class="comment-title">유저이름</h5>
             </div>
+            <p class="hidden_comment_id">{{comment.id}}</p>
             <h6>{{comment.comment_date | date:'Y-m-d'}}</h6>
             <p class="comment-text">{{comment.comment_contents}}</p>
           </div>
           <div class="comment-delete">
-            <a href="{% url 'comment_delete' cat.id comment.id %}">
+                          
+            <!-- <a href="{% url 'comment_delete' cat.id comment.id %}">
+              <ion-icon name="close"></ion-icon> -->
+              <a data-toggle="modal" data-target="#CommentModal" href="#">
               <ion-icon name="close"></ion-icon>
             </a>
 =======
@@ -238,7 +259,48 @@
     </div>
   </div>
   <hr>
+  
   {% endfor %}
+  <!-- 고양이 글 삭제 modal -->
+  <div id="CatModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">UOSCAT</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>진짜로 내용을 삭제하시겠습니까?</p>
+        </div>
+        <div class="modal-footer">
+          <button onclick="CatDelete()" type="button" class="btn btn-primary">삭제하기</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">취소하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 댓글 삭제 modal -->
+  <div id="CommentModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">UOSCAT</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>진짜로 댓글을 삭제하시겠습니까?</p>
+        </div>
+        <div class="modal-footer">
+          <button onclick="CommentDelete()" type="button" class="btn btn-primary">삭제하기</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">취소하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- choices to json -->

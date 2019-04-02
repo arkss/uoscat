@@ -5166,7 +5166,7 @@ input[type="submit"].btn.btn-mini {
   cursor: default;
   background-color: #fff;
 }
-
+/* 
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -5284,7 +5284,7 @@ input[type="submit"].btn.btn-mini {
 
 .modal-footer .btn-block + .btn-block {
   margin-left: 0;
-}
+} */
 
 .tooltip {
   position: absolute;
