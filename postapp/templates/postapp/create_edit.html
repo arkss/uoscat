@@ -1,7 +1,8 @@
 {% extends "postapp/base.html" %}
 {% block content %}
 
-<div class="container">
+<div class="backimage">
+<div class="edit_container">
     <h1 class="cat">
       {% ifequal now 'edit' %}
       수정 페이지
@@ -26,5 +27,5 @@
       $('label')[3].innerHTML="BODY";
     </script>
 </div>
-
+</div>
 {% endblock %}
