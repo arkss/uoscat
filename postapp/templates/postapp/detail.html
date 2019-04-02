@@ -199,7 +199,7 @@
       </tbody>
       {% endfor %}
     </table>
-    <form id="newname_form" action="{% url 'add_name' cat.id%}">
+    <form method="POST" id="newname_form" action="{% url 'add_name' cat.id%}">
       <input id="newname_input" type="text" name="add_name">
       <input onclick="check_error()"  class="btn btn-secondary" value="새 이름 추가하기" style="width: 100px;">
 

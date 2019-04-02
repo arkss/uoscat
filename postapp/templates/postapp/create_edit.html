@@ -1,8 +1,10 @@
 {% extends "postapp/base.html" %}
 {% block content %}
 
-<div class="backimage">
-<div class="edit_container">
+<div class="backimage d1">
+</div>
+<div class="edit_wrap">
+<div class="d1 edit_container">
     <h1 class="cat">
       {% ifequal now 'edit' %}
       수정 페이지
@@ -28,4 +30,5 @@
     </script>
 </div>
 </div>
+
 {% endblock %}
