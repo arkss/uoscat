@@ -7,7 +7,7 @@
   function CatDelete() {
     location.replace("/detail/{{cat.pk}}/delete");
   }
-  
+
   function CommentDelete(){
     var comment_id = $('.hidden_comment_id').text();
     console.log(comment_id);
@@ -66,7 +66,7 @@
                   <!-- <a href="{% url 'delete' cat.id %}" style="margin-right: 10px;">Delete<ion-icon name="trash"></ion-icon></a> -->
                   <a href="#" data-toggle="modal"
                   data-target="#CatModal"  style="margin-right: 10px;">Delete<ion-icon name="trash"></ion-icon></a>
-                  
+
 
 
                   <a href="{% url 'edit' cat.id %}">Edit<ion-icon name="create"></ion-icon></a>
@@ -95,7 +95,7 @@
                         </li>
                       </ul>
                   </div>
-                  
+
                 </div>
                 <div>
                 </div>
@@ -226,7 +226,6 @@
         <div class="comment-body">
           <div class="comment-content">
             <div class="comment-content-first-row">
-<<<<<<< HEAD
               <div>
                 <ion-icon name="contact" style="width:20px;height:20px;margin-top:4px;"></ion-icon>
               </div>
@@ -237,29 +236,19 @@
             <p class="comment-text">{{comment.comment_contents}}</p>
           </div>
           <div class="comment-delete">
-                          
+
             <!-- <a href="{% url 'comment_delete' cat.id comment.id %}">
               <ion-icon name="close"></ion-icon> -->
               <a data-toggle="modal" data-target="#CommentModal" href="#">
               <ion-icon name="close"></ion-icon>
             </a>
-=======
-                <div><ion-icon name="contact"></ion-icon></div>
-                <h5 class="comment-title">유저이름</h5>
-            </div>
-              <h6>{{comment.comment_date}}</h6>
-              <p class="comment-text">{{comment.comment_contents}}</p>
-          </div>
-          <div class="comment-delete">
-              <a href="{% url 'comment_delete' cat.id comment.id %}"><ion-icon name="close"></ion-icon></a>
->>>>>>> sungbin
           </div>
         </div>
       </div>
     </div>
   </div>
   <hr>
-  
+
   {% endfor %}
   <!-- 고양이 글 삭제 modal -->
   <div id="CatModal" class="modal" tabindex="-1" role="dialog">
@@ -305,18 +294,6 @@
 
 <!-- choices to json -->
 <script>
-<<<<<<< HEAD
-    {% if choices_exist %}
-    
-    const str =
-      "[{% for choice in choices %}{\"name\":\"{{choice.name}}\",\"id\":{{choice.id}},\"count\":{{choice.count}},\"vote_url\":\"{%url 'vote' vote.id%}\",\"delete_url\":\"{%url 'delete_choice' cat.id choice.id %}\"},{%endfor%}]"; 
-    {% else %}
-    const str = ''; 
-    {% endif %}
-    const add_url = "{% url 'add_name' cat.id%}";
-  </script>
-
-=======
   {% if choices_exist %}
   const str =
     "[{% for choice in choices %}{\"name\":\"{{choice.name}}\",\"id\":{{choice.id}},\"count\":{{choice.count}},\"vote_url\":\"{%url 'vote' vote.id%}\",\"delete_url\":\"{%url 'delete_choice' cat.id choice.id %}\"},{%endfor%}]";
@@ -325,7 +302,6 @@
   {% endif %}
   const add_url = "{% url 'add_name' cat.id%}";
 </script>
->>>>>>> sungbin
 <script type="text/javascript" src="{%static './choices_voting.js' %}"></script>
 
 <!-- add react -->
