@@ -171,6 +171,11 @@
     }
   }
   
-  /* .in{
-      opacity: 0.5;
-  } */
+  
+
+
+
+
+  .hidden_comment_id{
+      display: none;
+  }
