@@ -36,7 +36,12 @@ def newcat(request):
 
     else:
         form = CatPost()
-        return render(request, 'postapp/create.html',{'form':form})
+        context={
+            'form':form,
+            'now':'new',
+            'writing':True,
+        }
+        return render(request, 'postapp/create_edit.html',context)
 
 # 각 고양이의 상세페이지
 def detail(request,num):
@@ -208,7 +213,12 @@ def edit(request, cat_id):
     # 수정사항을 입력하기 위해 페이지에 처음 접속했을 때
     else:
         form = CatPost()
-        return render(request, 'postapp/edit_post.html',{'form':form})
+        context={
+            'form':form,
+            'writing':True,
+            'now':'edit',
+        }
+        return render(request, 'postapp/create_edit.html',context)
 
 # 투표 이름 삭제
 def delete_choice(request, cat_id, choice_id):

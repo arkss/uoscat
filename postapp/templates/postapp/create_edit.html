@@ -1,0 +1,30 @@
+{% extends "postapp/base.html" %}
+{% block content %}
+
+<div class="container">
+    <h1 class="cat">
+      {% ifequal now 'edit' %}
+      수정 페이지
+      {% else %}
+      새로운 고양이
+      {% endifequal %}
+    </h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{form.as_table}}
+        </table>
+        <br>
+        <div class="submit">
+          <button type="submit" class="submit_btn btn btn-primary">제출하기</button>
+        </div>
+    </form>
+    <script>
+      $('label')[0].innerHTML="NAME";
+      $('label')[1].innerHTML="IMAGE";
+      $('label')[2].innerHTML="GENDER";
+      $('label')[3].innerHTML="BODY";
+    </script>
+</div>
+
+{% endblock %}

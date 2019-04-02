@@ -1,0 +1,37 @@
+table{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+#id_name{
+  width: 606px;
+  height: 20px;
+}
+
+#id_image{
+  width: 620px;
+  height: 30px;
+}
+
+#id_gender{
+  width: 620px;
+  height: 30px;
+}
+#id_body{
+  width: 606px;
+  height: 250px;
+}
+
+.submit{
+  display: flex;
+  justify-content: center;
+}
+.submit_btn{
+  width: 620px;
+  margin-left: 50px;
+}
+
+.cat{
+  margin-top: 50px;
+  text-align: center;
+}
