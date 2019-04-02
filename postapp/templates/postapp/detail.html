@@ -1,7 +1,11 @@
 {% extends "postapp/base.html" %}
 {% block content %}
 {% load staticfiles %}
-
+<script>
+  function CatDelete() {
+    location.replace("/detail/{{cat.pk}}/delete");
+  }
+</script>
 <!-- 투표 입력시 이름 미기재, 중복이름 처리 -->
 <script>
   function check_error() {
@@ -50,8 +54,12 @@
                   {% if cat.voting %}<div id="app" style="margin-left: 15px;"></div>{%endif%}
                 </div>
                 <div style="display: flex;">
-                  <a href="{% url 'delete' cat.id %}" style="margin-right: 10px;">Delete<ion-icon name="trash">
-                    </ion-icon></a>
+                  <!-- <a href="{% url 'delete' cat.id %}" style="margin-right: 10px;">Delete<ion-icon name="trash"></ion-icon></a> -->
+                  <a href="#" data-toggle="modal"
+                  data-target="#myModal"  style="margin-right: 10px;">Delete<ion-icon name="trash"></ion-icon></a>
+                  
+
+
                   <a href="{% url 'edit' cat.id %}">Edit<ion-icon name="create"></ion-icon></a>
                 </div>
               </div>
@@ -227,7 +235,28 @@
     </div>
   </div>
   <hr>
+  
   {% endfor %}
+  
+  <div id="myModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">UOSCAT</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>진짜로 내용을 삭제하시겠습니까?</p>
+        </div>
+        <div class="modal-footer">
+          <button onclick="CatDelete()" type="button" class="btn btn-primary">삭제하기</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">취소하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- choices to json -->
