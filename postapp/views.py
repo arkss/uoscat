@@ -206,7 +206,7 @@ def edit(request, cat_id):
 
     # 수정사항을 입력하기 위해 페이지에 처음 접속했을 때
     else:
-        form = CatPost()
+        form = CatPost(instance = cat)
         context={
             'form':form,
             'writing':True,
