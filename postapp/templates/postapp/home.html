@@ -43,21 +43,35 @@
 
     </div>
   </section>
-  <div class="center pagination">
-    {% if posts.has_previous %}
-      <a href="?page=1"><ion-icon name="arrow-dropleft-circle"></ion-icon></a>
-      <a href="?page={{posts.previous_page_number}}"><ion-icon name="arrow-dropleft"></ion-icon></a>
-    {% endif %}
 
-    <span>{{posts.number}}</span>
-    <span>/</span>
-    <span>{{posts.paginator.num_pages}}</span>
+  <!--       페이지네이션          -->
 
-    {% if posts.has_next %}
-      <a href="?page={{posts.next_page_number}}"><ion-icon name="arrow-dropright"></ion-icon></a>
-      <a href="?page={{posts.paginator.num_pages}}"><ion-icon name="arrow-dropright-circle"></ion-icon></a>
-    {% endif %}
+  <div class="d-flex pagination">
+    
+      {% if posts.has_previous %}
+          
+        <div class="pagination-arrow">
+          
+            <a href="?page=1"><ion-icon name="arrow-dropleft-circle"></ion-icon></a>
+            <a href="?page={{posts.previous_page_number}}"><ion-icon name="arrow-dropleft"></ion-icon></a>
+        </div>  
+      {% endif %}
+  
+      <span>{{posts.number}}</span>
+      <span>/</span>
+      <span>{{posts.paginator.num_pages}}</span>
+  
+      {% if posts.has_next %}
+      
+        <div class="pagination-arrow">
+            <a href="?page={{posts.next_page_number}}"><ion-icon name="arrow-dropright"></ion-icon></a>
+            <a href="?page={{posts.paginator.num_pages}}"><ion-icon name="arrow-dropright-circle"></ion-icon></a>    
+        </div>
+      {% endif %}
+    
+    
   </div>
+
 
 </div>
 {% endblock %}
