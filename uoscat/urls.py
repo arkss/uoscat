@@ -14,13 +14,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',postapp.views.home, name='home'),
     path('newcat/',postapp.views.newcat, name="newcat"),
-<<<<<<< HEAD
-
-    path('detail/<int:num>',postapp.views.detail, name='detail'),
-=======
-    
     path('detail/<int:cat_id>',postapp.views.detail, name='detail'),
->>>>>>> minsung
     path('detail/<int:cat_id>/delete',postapp.views.delete, name='delete'), # 글 삭제
     path('detail/<int:cat_id>/delete/<int:choice_id>', postapp.views.delete_choice, name='delete_choice'), # 이름 후보 삭제
     path('detail/<int:cat_id>/edit', postapp.views.edit, name='edit'), # 글 수정
@@ -34,11 +28,7 @@ urlpatterns = [
     
     # 로그인 및 로그아웃
     path('accounts/',include('allauth.urls')),
-<<<<<<< HEAD
-
-=======
     path('login/',loginapp.views.login, name='login'),
->>>>>>> minsung
     path('my_logout/',loginapp.views.my_logout,name='logout' ),
 ] +static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
