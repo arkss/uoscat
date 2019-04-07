@@ -9,7 +9,10 @@ import datetime
 
 from django.views.decorators.csrf import csrf_exempt #csrf 귀찮아.
 
+
+
 from .models import Cat,Choice, Vote, Comment, CatImage
+# 소셜 로그인 User 불러오기
 from django.contrib.auth.models import User
 
 # 메인화면
@@ -29,28 +32,51 @@ def home(request):
     }
     return render(request, 'postapp/home.html',context)
 
+from django.views.generic.edit import FormView
+from .form import CatPost
+"""
+class FileFieldView(FormView):
+    form_class = CatPost
+    template_name = 'postapp/create_edit.html'
+    success_url = ''  
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        files = request.FILES.getlist('file_field')
+        if form.is_valid():
+            for f in files:
+                pass
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)  
+"""
 # 새로운 고양이 추가
 def newcat(request):
     req_type=request_post_and_authenticated(request)
+
     if req_type==1:
         form = CatPost(request.POST, request.FILES)
+        
         if form.is_valid():
-            post = form.save(commit=False)
-            post.lasteat = timezone.now()
-            post.user = get_object_or_404(User,pk=request.user.pk)
-            post.save()
-
-            #  고양이 만들 때 vote랑 choice를 같이 만든다.
-            vote = Vote(cat=post,user=get_object_or_404(User,pk=request.user.pk))
-            vote.save()
-            choice = Choice(vote=vote,name=post.name,user=get_object_or_404(User,pk=request.user.pk))
-            choice.save()
-
+            cat = Cat()
+            cat.name = form.cleaned_data['name']
+            cat.image = form.cleaned_data['image']
+            
+            cat.gender = form.cleaned_data['gender']
+            cat.lasteat = timezone.now()
+            cat.body = form.cleaned_data['body']
+            cat.user=get_object_or_404(User,pk=request.user.pk)
+            cat.save()
+            files = request.FILES.getlist('image')
+            for f in files:
+                catimage = CatImage(cat=cat, sub_image=f)
+                catimage.save()
         return redirect('home')
 
         # return render(request, 'postapp/home.html')
 
-    elif req_type==2:
+    else:
         form = CatPost()
         context={
             'form':form,
@@ -58,12 +84,10 @@ def newcat(request):
             'writing':True,
         }
         return render(request, 'postapp/create_edit.html',context)
-    else:
-        return redirect('home')
 
 # 각 고양이의 상세페이지
 def detail(request,cat_id):
-    cat=Cat.objects.get(pk=cat_id)
+    cat=Cat.objects.get(id=cat_id)
     habitats=[pos.as_dict() for pos in cat.habitat_set.all()]
 
     # vote가 없을 경우 예외 처리

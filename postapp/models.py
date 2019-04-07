@@ -20,10 +20,9 @@ class Cat(models.Model):
 
 class CatImage(models.Model):
     cat = models.ForeignKey(Cat, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images')
+    sub_image = models.ImageField(upload_to='images')
 
-    def __str__(self):
-        return self.cat.name + "image"
+
 
 class Vote(models.Model):
     created = models.DateTimeField(default=django.utils.timezone.now)

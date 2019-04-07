@@ -30,6 +30,7 @@ urlpatterns = [
     path('accounts/',include('allauth.urls')),
     path('login/',loginapp.views.login, name='login'),
     path('my_logout/',loginapp.views.my_logout,name='logout' ),
+    
 ] +static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
 # url(r'^login/$','django.contrib.auth.views.login', {'template_name': '/login.html'}),
