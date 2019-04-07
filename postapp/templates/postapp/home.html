@@ -28,7 +28,7 @@
                     <span><a class="zoom" data-pretty="prettyPhoto" href="{{cat.image.url}}">
                       <i class="icon-rounded icon-48 icon-zoom-in"></i>
                     </a></span>
-                    <span><a href="{% url 'detail' num=cat.pk %}">
+                    <span><a href="{% url 'detail' cat.id %}">
                       <i class="icon-rounded icon-48 icon-book"></i>
                     </a></span>
                   </article>
@@ -47,29 +47,29 @@
   <!--       페이지네이션          -->
 
   <div class="d-flex pagination">
-    
+
       {% if posts.has_previous %}
-          
+
         <div class="pagination-arrow">
-          
+
             <a href="?page=1"><ion-icon name="arrow-dropleft-circle"></ion-icon></a>
             <a href="?page={{posts.previous_page_number}}"><ion-icon name="arrow-dropleft"></ion-icon></a>
-        </div>  
+        </div>
       {% endif %}
-  
+
       <span>{{posts.number}}</span>
       <span>/</span>
       <span>{{posts.paginator.num_pages}}</span>
-  
+
       {% if posts.has_next %}
-      
+
         <div class="pagination-arrow">
             <a href="?page={{posts.next_page_number}}"><ion-icon name="arrow-dropright"></ion-icon></a>
-            <a href="?page={{posts.paginator.num_pages}}"><ion-icon name="arrow-dropright-circle"></ion-icon></a>    
+            <a href="?page={{posts.paginator.num_pages}}"><ion-icon name="arrow-dropright-circle"></ion-icon></a>
         </div>
       {% endif %}
-    
-    
+
+
   </div>
 
 

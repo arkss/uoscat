@@ -109,7 +109,7 @@
 
                   <div class="project-widget">
                     <h4><i class="icon-48 icon-map-marker"></i>Habitat</h4>
-                    <form action="{% url 'addhabitat' num=cat.pk %}" method="post">
+                    <form action="{% url 'addhabitat' cat_id=cat.pk %}" method="post">
                       {% csrf_token %}
                       <ul class="project-detail">
                         <li><label>발견지역들 클릭한 후 제출!</label><button type="submit" class="btn btn-secondary"
