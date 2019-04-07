@@ -9,14 +9,19 @@ class Cat(models.Model):
     image = models.ImageField(upload_to='images')
     image_thumbnail = ImageSpecField(source='image',processors=[ResizeToFill(500,500)],format='BMP')
     gender = models.CharField(choices=[("male","수컷"),("female","암컷"),("null","모름")],max_length=20)
-    # habitat_x = models.FloatField(default=37.5839)
-    # habitat_y = models.FloatField(default=127.0588)
     body = models.TextField(blank=True)
     lasteat = models.DateTimeField(blank=True)
     voting = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
+class CatImage(models.Model):
+    cat = models.ForeignKey(Cat, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images')
+
+    def __str__(self):
+        return self.cat.name + "image"
 
 class Vote(models.Model):
     created = models.DateTimeField(default=django.utils.timezone.now)
