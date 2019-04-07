@@ -1,1 +1,1 @@
-ReactDOM.render(<FormDialog/>,document.getElementById('app'))
+ReactDOM.render(<VoteComponent/>,document.getElementById('app'))

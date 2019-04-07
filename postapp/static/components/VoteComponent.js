@@ -16,6 +16,7 @@ class FormDialog extends React.Component {
       open: false,
       choices: choices,
       tmp: '',
+      voting: cat_voting,
     }
   }
   handleVote_increase =(i)=>{
@@ -65,22 +66,39 @@ class FormDialog extends React.Component {
     if(find.length>0)return -2;
     return 1;
   }
+  toggleVote=()=>{
+    let nextVoting=this.state.voting;
+    nextVoting=!nextVoting;
+    axios({
+      method: 'get',
+      url: condition_url, //detail.html script
+    }).then(()=>{
+      this.setState({
+        voting: nextVoting
+      })
+    })
+  }
 
   render() {
     return (
       <div>
-        <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-          이름 지어주기
-        </Button>
+        {this.state.voting?(
+          <Button variant="outlined" color="primary" onClick={this.handleClickOpen} style={{width: "100%"}}>
+            이름 지어주기
+          </Button>
+          ):(
+            <Button variant="outlined" color="primary" onClick={this.toggleVote} style={{width: "100%"}}>
+              투표시작!
+            </Button>
+          )}
+
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">이름 투표 및 등록 진행중...</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              <Board choices={this.state.choices} handleVote_increase={this.handleVote_increase} handleDelete={this.handleDelete}/>
-            </DialogContentText>
+            <Board choices={this.state.choices} handleVote_increase={this.handleVote_increase} handleDelete={this.handleDelete}/>
             <Grid container spacing={12}>
               <Grid item xs={9}>
               <TextField autoFocus margin="auto" id="newname_input" label="새이름 추가하기"
@@ -97,8 +115,8 @@ class FormDialog extends React.Component {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleClose} color="primary">
-              무슨기능하지
+            <Button onClick={()=>{this.handleClose();this.toggleVote()}} color="primary">
+              투표종료
             </Button>
           </DialogActions>
         </Dialog>

@@ -31,18 +31,18 @@ class Board extends React.Component{
   render(){
 
     return(
-      <Table style={{width: "500px"}}>
+      <Table style={{width: "335px"}}>
         <TableHead>
           <TableRow>
-            <TableCell align="center">이름</TableCell>
-            <TableCell align="center">투표수</TableCell>
-            <TableCell align="center">지지하기</TableCell>
+            <TableCell align="center">Name</TableCell>
+            <TableCell align="center">Votes</TableCell>
+            <TableCell align="center">Select!</TableCell>
             <TableCell align="center"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {this.props.choices.map((e,i)=>(
-            <TableRow>
+            <TableRow key={i}>
               <TableCell align="center">{e.name}</TableCell>
               <TableCell align="center">{e.count}</TableCell>
               <TableCell align="center"><Radio onClick={()=>this.handleVote(e.id,e.vote_url,i)}/></TableCell>

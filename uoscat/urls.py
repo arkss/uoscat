@@ -14,7 +14,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',postapp.views.home, name='home'),
     path('newcat/',postapp.views.newcat, name="newcat"),
-    
+
     path('detail/<int:num>',postapp.views.detail, name='detail'),
     path('detail/<int:cat_id>/delete',postapp.views.delete, name='delete'), # 글 삭제
     path('detail/<int:cat_id>/<int:choice_id>/delete', postapp.views.delete_choice, name='delete_choice'), # 이름 후보 삭제
@@ -29,8 +29,8 @@ urlpatterns = [
     path('addhabitat/<int:num>',postapp.views.addhabitat, name='addhabitat'),
     path('login/',loginapp.views.login, name='login'),
     path('accounts/',include('allauth.urls')),
-   
+
     path('my_logout/',loginapp.views.my_logout,name='logout' ),
 ] +static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
-# url(r'^login/$','django.contrib.auth.views.login', {'template_name': '/login.html'}), 
+# url(r'^login/$','django.contrib.auth.views.login', {'template_name': '/login.html'}),
