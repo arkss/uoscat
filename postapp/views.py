@@ -9,9 +9,13 @@ import datetime
 
 from django.views.decorators.csrf import csrf_exempt #csrf 귀찮아.
 
-from .models import Cat,Choice, Vote, Comment, CatImage
-# 메인화면
 
+
+from .models import Cat,Choice, Vote, Comment, CatImage
+
+
+
+# 메인화면
 def home(request):
     cats=Cat.objects.all()
     paginator = Paginator(cats, 6)
@@ -24,6 +28,57 @@ def home(request):
     }
     return render(request, 'postapp/home.html',context)
 
+from django.views.generic.edit import FormView
+from .form import CatPost
+"""
+class FileFieldView(FormView):
+    form_class = CatPost
+    template_name = 'postapp/create_edit.html'
+    success_url = ''  
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        files = request.FILES.getlist('file_field')
+        if form.is_valid():
+            for f in files:
+                pass
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)  
+"""
+# 새로운 고양이 추가
+def newcat(request):
+    
+    if request.method == "POST":
+        form = CatPost(request.POST, request.FILES)
+        
+        if form.is_valid():
+            cat = Cat()
+            cat.name = form.cleaned_data['name']
+            cat.image = form.cleaned_data['image']
+            
+            cat.gender = form.cleaned_data['gender']
+            cat.lasteat = timezone.now()
+            cat.body = form.cleaned_data['body']
+            cat.save()
+            files = request.FILES.getlist('image')
+            for f in files:
+                catimage = CatImage(cat=cat, sub_image=f)
+                catimage.save()
+        return redirect('home')
+
+        # return render(request, 'postapp/home.html')
+
+    else:
+        form = CatPost()
+        context={
+            'form':form,
+            'now':'new',
+            'writing':True,
+        }
+        return render(request, 'postapp/create_edit.html',context)
+"""
 # 새로운 고양이 추가
 def newcat(request):
     if request.method == "POST":
@@ -44,12 +99,11 @@ def newcat(request):
             'writing':True,
         }
         return render(request, 'postapp/create_edit.html',context)
-
+"""
 # 각 고양이의 상세페이지
 def detail(request,cat_id):
-    cat=Cat.objects.get(pk=cat_id)
+    cat=Cat.objects.get(id=cat_id)
     habitats=[pos.as_dict() for pos in cat.habitat_set.all()]
-
 
     # vote가 없을 경우 예외 처리
     try:

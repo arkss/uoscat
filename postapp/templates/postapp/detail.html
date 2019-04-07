@@ -50,6 +50,16 @@
   }
 </script>
 <div class="container">
+    <!-- <div class="cat_image">
+      {% for image in cat.catimage_set.all %}
+        <img src="{{ image.sub_image.url }}" alt="" />
+      {% endfor %}
+    </div> -->
+  <!-- <div class="sub_image">
+    {% for image in cat.catimage_set.all %}
+      <img src="{{ image.sub_image.url }}" alt="" />
+    {% endfor %}
+  </div> -->
   <!-- <h1>Detail</h1> -->
   <div class="row">
     <section id="maincontent">
@@ -213,6 +223,7 @@
     <input type="submit" value="댓글쓰기">
   </form>
 
+ 
 
   {% for comment in cat.comment_set.all %}
   <div class="row">
@@ -315,5 +326,28 @@
 <script type="text/babel" src="{%static 'components/DOM_render.js'%}"></script>
 <!-- material ui -->
 <script src="https://unpkg.com/@material-ui/core/umd/material-ui.production.min.js" crossorigin="anonymous"></script>
+<!-- 캐러셀 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script>
+    $(document).ready(function(){
+      $('.cat_image').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        fade: true,
+        asNavFor: '.sub_image',
+        arrows: false,
+      });
+      $('.sub_image').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        asNavFor: '.slider-for',
+        dots: true,
+        centerMode: true,
+        focusOnSelect: true,
+        arrows: false,
+      });
+    });
+</script>
 
 {% endblock %}
