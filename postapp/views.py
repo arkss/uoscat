@@ -33,7 +33,7 @@ def newcat(request):
             post.lasteat = timezone.now()
             post.save()
         return redirect('home')
-                
+
         # return render(request, 'postapp/home.html')
 
     else:
@@ -62,7 +62,7 @@ def detail(request,cat_id):
     choices = Choice.objects.filter(vote_id=cat.vote.id)
 
     choices_name = [choice.as_dict() for choice in choices]
-    
+
     max_count = 0
     for choice in choices:
         if max_count < choice.count:
@@ -172,7 +172,7 @@ def add_name(request, cat_id):
         # 입력한 이름의 길이가 0일 경우(위에서 화이트 스페이스를 모두 제거 해주었으므로 화이트스페이스로만 입력하면 무조건 길이가 0이다.) 예외처리해준다.
         if str(choice_one) == choice.name or len(choice.name) == 0:
             return redirect('/detail/'+str(cat.id))
-    
+
     choice.save()
     return redirect('/detail/'+str(cat.id))
 
