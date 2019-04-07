@@ -31,7 +31,8 @@ def home(request):
 
 # 새로운 고양이 추가
 def newcat(request):
-    if request.method == "POST" and request.user.is_authenticated:
+    req_type=request_post_and_authenticated(request)
+    if req_type==1:
         form = CatPost(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
@@ -49,7 +50,7 @@ def newcat(request):
 
         # return render(request, 'postapp/home.html')
 
-    elif request.user.is_authenticated:
+    elif req_type==2:
         form = CatPost()
         context={
             'form':form,
@@ -95,14 +96,15 @@ def detail(request,cat_id):
         'pos': habitats,
         'now': 'detail',
         'max_name': max_name,
-        'own': cat.user.pk==request.user.pk,
+        'own': cat.user.pk==request.user.pk, #글작성자와 로그인한 유저가 같은가?
     }
     return render(request,'postapp/detail.html',context)
 
 
 
 def add_habitat(request,cat_id):
-    if request.method == 'POST':
+    req_type=request_post_and_authenticated(request)
+    if req_type==1:
         cat=Cat.objects.get(pk=cat_id)
         position_string=request.POST['position_string'].split('&')
         position=[e.split(',') for e in position_string][:-1]
@@ -114,11 +116,9 @@ def add_habitat(request,cat_id):
 # 고양이의 이름 투표 기능
 def vote_condition(request,cat_id):
     cat = Cat.objects.get(id=cat_id)
-
-    # 투표중인지 표시
-
+    req_type=request_post_and_authenticated(request)
     # 투표를 종료하면 기존의 이름도 데이터에서 삭제해준다. 나중에는 그냥 투표자체를 없애는 걸로 바꾸자.
-    if cat.voting:
+    if cat.voting and req_type==1:
         cat.voting = False
         # 투표를 종료하면 고양이의 이름을 투표의 1등으로 바꿔준다.
         choices = Choice.objects.filter(vote_id=cat.vote.id)
@@ -198,8 +198,10 @@ def delete(request, cat_id):
 
 def edit(request, cat_id):
     cat = Cat.objects.get(id=cat_id)
+
+    req_type = request_post_and_authenticated(request)
     # 글을 수정사항을 입력하고 제출을 눌렀을 때
-    if request.method == "POST" and request.user.is_authenticated:
+    if req_type==1:
         form = CatPost(request.POST, request.FILES)
         if form.is_valid():
             print(form.cleaned_data)
@@ -211,7 +213,7 @@ def edit(request, cat_id):
             return redirect('/detail/'+str(cat.pk))
 
     # 수정사항을 입력하기 위해 페이지에 처음 접속했을 때
-    elif request.user.is_authenticated:
+    elif req_type==2:
         form = CatPost(instance = cat)
         context={
             'form':form,
@@ -231,7 +233,8 @@ def delete_choice(request, cat_id, choice_id):
 
 # 댓글 등록
 def comment_write(request, cat_id):
-    if request.method == "POST" and request.user.is_authenticated:
+    req_type=request_post_and_authenticated(request)
+    if req_type==1:
         cat = get_object_or_404(Cat, pk=cat_id)
         content = request.POST.get('content')
         Comment.objects.create(cat=cat, comment_contents=content,user=get_object_or_404(User,pk=request.user.pk))
@@ -245,3 +248,14 @@ def comment_delete(request, cat_id, comment_id):
     if comment.user.pk == request.user.pk:
         comment.delete()
     return redirect('/detail/'+str(cat.id))
+
+
+# POST 메소드 & 사용자는 로그인 상태 : 1
+# POST 메소드 x & 사용자는 로그인 상태 : 2
+# POST 메소드x & 사용자 로그인 x : 0
+def request_post_and_authenticated(request):
+    if request.method == "POST" and request.user.is_authenticated:
+        return 1
+    elif request.user.is_authenticated:
+        return 2
+    return 0
