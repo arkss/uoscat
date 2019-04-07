@@ -9,8 +9,9 @@ import datetime
 
 from django.views.decorators.csrf import csrf_exempt #csrf 귀찮아.
 
-from .models import Cat,Choice, Vote, Comment
+from .models import Cat,Choice, Vote, Comment, CatImage
 # 메인화면
+
 def home(request):
     cats=Cat.objects.all()
     paginator = Paginator(cats, 6)
@@ -31,7 +32,8 @@ def newcat(request):
             post = form.save(commit=False)
             post.lasteat = timezone.now()
             post.save()
-            return redirect('home')
+        return redirect('home')
+                
         # return render(request, 'postapp/home.html')
 
     else:
@@ -44,17 +46,17 @@ def newcat(request):
         return render(request, 'postapp/create_edit.html',context)
 
 # 각 고양이의 상세페이지
-def detail(request,num):
-    cat=Cat.objects.get(pk=num)
+def detail(request,cat_id):
+    cat=Cat.objects.get(pk=cat_id)
     habitats=[pos.as_dict() for pos in cat.habitat_set.all()]
 
 
     # vote가 없을 경우 예외 처리
     try:
-        vote = Vote.objects.get(cat_id=num)
+        vote = Vote.objects.get(cat_id=cat_id)
 
     except:
-        vote = Vote(cat_id=num)
+        vote = Vote(cat_id=cat_id)
         vote.save()
     # 해당 고양이의 vote 의 id 에 일치하는 고양이 후보이름만 가져온다.
     choices = Choice.objects.filter(vote_id=cat.vote.id)
@@ -84,19 +86,19 @@ def detail(request,num):
 
 
 
-def addhabitat(request,num):
+def add_habitat(request,cat_id):
     if request.method == 'POST':
-        cat=Cat.objects.get(pk=num)
+        cat=Cat.objects.get(pk=cat_id)
         position_string=request.POST['position_string'].split('&')
         position=[e.split(',') for e in position_string][:-1]
         for xy in position:
             cat.habitat_set.create(x=float(xy[0]),y=float(xy[1]))
         # print(cat.habitat_set.all())
-    return redirect('detail',str(num))
+    return redirect('detail',str(cat_id))
 
 # 고양이의 이름 투표 기능
-def vote_condition(request,num):
-    cat = Cat.objects.get(pk=num)
+def vote_condition(request,cat_id):
+    cat = Cat.objects.get(id=cat_id)
 
     # 투표중인지 표시
 
@@ -135,36 +137,29 @@ def vote_condition(request,num):
 
 @csrf_exempt
 def vote(request, vote_id):
-    # cat = Cat.objects.get(pk=cat_id)
     vote = Vote.objects.get(pk=vote_id)
-    # 이따 프론트에서 이 값으로 투표할 이름을 가져오게끔 하자.
-    print(request.POST)
     selection = request.POST['choice']
 
-    try:
-        choice = Choice.objects.get(vote_id=vote_id, id=selection)
-        choice.count += 1
-        choice.save()
-    except:
-        choice = Choice(vote_id=vote_id, name=selection, count=1)
-        choice.save()
+    choice = Choice.objects.get(vote_id=vote_id, id=selection)
+    choice.count += 1
+    choice.save()
 
     return redirect('/detail/'+str(vote.cat.id))
 
 
 # 마지막으로 밥 준 시간
-def feed(request,num):
-    cat=Cat.objects.get(pk=num)
+def feed(request,cat_id):
+    cat=Cat.objects.get(id=cat_id)
     cat.lasteat=timezone.now()
     cat.save()
-    return redirect('/detail/'+str(cat.pk))
+    return redirect('/detail/'+str(cat.id))
 
 
 # 새로운 이름 투표에 이름 추가해주기
 @csrf_exempt
 def add_name(request, cat_id):
     cat = Cat.objects.get(id = cat_id)
-    choice = Choice(vote_id = cat.vote.id)
+    choice = Choice(vote_id = cat.vote.id, count=0)
     choice_all = Choice.objects.filter(vote_id=cat.vote.id)
     # 입력 시 공백문자를 무시하고 가져온다.
     choice.name = request.POST['add_name'].strip()
@@ -176,10 +171,10 @@ def add_name(request, cat_id):
         # type(choice.name) 은 <class 'str'> 이어서 형변환을 시켜서 비교해주었다.
         # 입력한 이름의 길이가 0일 경우(위에서 화이트 스페이스를 모두 제거 해주었으므로 화이트스페이스로만 입력하면 무조건 길이가 0이다.) 예외처리해준다.
         if str(choice_one) == choice.name or len(choice.name) == 0:
-            return redirect('/detail/'+str(cat.pk))
-    choice.count = 0
+            return redirect('/detail/'+str(cat.id))
+    
     choice.save()
-    return redirect('/detail/'+str(cat.pk))
+    return redirect('/detail/'+str(cat.id))
 
 # 고양이 글 삭제
 

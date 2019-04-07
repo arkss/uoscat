@@ -160,7 +160,7 @@
     {% if not cat.voting %}
     <div class="row">
       <p>새 이름을 지어줄까요?</p>
-      <a href="/votecondition/{{ cat.pk }}" class="btn btn-success">네</a>
+      <a href="{% url 'vote_condition' cat.id %}" class="btn btn-success">네</a>
     </div>
     {% else %}
     <p>투표 진행중</p>
@@ -199,7 +199,6 @@
       <input id="newname_input" type="text" name="add_name">
       <input onclick="check_error()"  class="btn btn-secondary" value="새 이름 추가하기" style="width: 100px;">
 
-      <p id="no_name_error" style="display: none;">글씨입력하세요</p>
     </form>
 
     <!-- <a href="/votecondition/{{cat.pk}}" class="btn btn-success" onclick="count_overlap()">투표 종료</a> -->

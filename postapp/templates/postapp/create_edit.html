@@ -16,6 +16,7 @@
         {% csrf_token %}
         <table>
             {{form.as_table}}
+            {{formset.as_table }}
         </table>
         <br>
         <div class="submit">

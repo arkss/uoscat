@@ -1,5 +1,9 @@
 @font-face { font-family: 'BMHANNAPro'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.0/BMHANNAPro.woff') format('woff'); font-weight: normal; font-style: normal; }
 
+.logo-name{
+  margin-bottom: 0px;
+}
+
 .d-flex{
   display: flex;
   align-items: center;
