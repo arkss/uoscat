@@ -76,6 +76,7 @@
                     {% if user.is_authenticated %}
                       <a href="/my_logout/">LogOut</a>
                       {{user.email}}
+                      {{user.username}}
                     {% else %}
                     <a href="{% provider_login_url 'google' %}">LogIn</a>
                     {% endif %}

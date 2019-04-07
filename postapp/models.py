@@ -3,6 +3,7 @@ from django.db import models
 import django.utils.timezone
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
+from django.contrib.auth.models import User
 
 class Cat(models.Model):
     name = models.CharField(max_length=20)
@@ -12,6 +13,7 @@ class Cat(models.Model):
     body = models.TextField(blank=True)
     lasteat = models.DateTimeField(blank=True)
     voting = models.BooleanField(default=False)
+    user = models.ForeignKey(User,on_delete=models.PROTECT)
 
     def __str__(self):
         return self.name
@@ -26,6 +28,7 @@ class CatImage(models.Model):
 class Vote(models.Model):
     created = models.DateTimeField(default=django.utils.timezone.now)
     cat = models.OneToOneField(Cat,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.PROTECT)
 
     def __str__(self):
         return self.cat.name+"의 투표"
@@ -34,6 +37,7 @@ class Choice(models.Model):
     vote = models.ForeignKey(Vote,on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
     count = models.IntegerField(default=0)
+    user = models.ForeignKey(User,on_delete=models.PROTECT)
 
     def __str__(self):
         return self.name
@@ -59,6 +63,7 @@ class Comment(models.Model):
     cat = models.ForeignKey(Cat, on_delete=models.CASCADE, null=True)
     comment_date =models.DateTimeField(auto_now_add=True) # add_now_add 는 등록시 현재시간으로 추가함
     comment_contents = models.CharField(max_length=200)
-     
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+
     def __str__(self):
         return self.comment_contents

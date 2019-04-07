@@ -10,13 +10,18 @@ import datetime
 from django.views.decorators.csrf import csrf_exempt #csrf 귀찮아.
 
 from .models import Cat,Choice, Vote, Comment, CatImage
-# 메인화면
+from django.contrib.auth.models import User
 
+# 메인화면
 def home(request):
     cats=Cat.objects.all()
     paginator = Paginator(cats, 6)
     page = request.GET.get('page')
     posts = paginator.get_page(page)
+    # User test
+    # if request.user.is_authenticated:
+    #     print(request.user.id)
+    #     print(get_object_or_404(User,pk=request.user.pk))
     context={
         'cats': cats,
         'posts': posts,
@@ -26,17 +31,25 @@ def home(request):
 
 # 새로운 고양이 추가
 def newcat(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         form = CatPost(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.lasteat = timezone.now()
+            post.user = get_object_or_404(User,pk=request.user.pk)
             post.save()
+
+            #  고양이 만들 때 vote랑 choice를 같이 만든다.
+            vote = Vote(cat=post,user=get_object_or_404(User,pk=request.user.pk))
+            vote.save()
+            choice = Choice(vote=vote,name=post.name,user=get_object_or_404(User,pk=request.user.pk))
+            choice.save()
+
         return redirect('home')
 
         # return render(request, 'postapp/home.html')
 
-    else:
+    elif request.user.is_authenticated:
         form = CatPost()
         context={
             'form':form,
@@ -44,19 +57,20 @@ def newcat(request):
             'writing':True,
         }
         return render(request, 'postapp/create_edit.html',context)
+    else:
+        return redirect('home')
 
 # 각 고양이의 상세페이지
 def detail(request,cat_id):
     cat=Cat.objects.get(pk=cat_id)
     habitats=[pos.as_dict() for pos in cat.habitat_set.all()]
 
-
     # vote가 없을 경우 예외 처리
     try:
         vote = Vote.objects.get(cat_id=cat_id)
 
-    except:
-        vote = Vote(cat_id=cat_id)
+    except: # vote를 시작한 사람을 고양이 등록자로 선정할 필요가 있을까 싶지만 일단 고!
+        vote = Vote(cat_id=cat_id,user=get_object_or_404(User,pk=request.user.pk))
         vote.save()
     # 해당 고양이의 vote 의 id 에 일치하는 고양이 후보이름만 가져온다.
     choices = Choice.objects.filter(vote_id=cat.vote.id)
@@ -81,6 +95,7 @@ def detail(request,cat_id):
         'pos': habitats,
         'now': 'detail',
         'max_name': max_name,
+        'own': cat.user.pk==request.user.pk,
     }
     return render(request,'postapp/detail.html',context)
 
@@ -120,16 +135,12 @@ def vote_condition(request,cat_id):
 
         cat.name = new_name[0].as_str()
 
-
         vote = Vote.objects.get(cat_id=cat.id).delete()
-
-
 
     # 투표를 시작하면 voting을 True로 바꿔주고 현재 고양이의 이름도 투표 목록에 넣어준다.
     else:
         cat.voting = True
-        origin_name = Choice(vote_id=cat.vote.id, name=cat.name, count = 0)
-        origin_name.save()
+        #origin name 삭제. 이미 newcat에서 만들어줬음.
 
     # choices = Choice.objects.all()
     cat.save()
@@ -159,7 +170,7 @@ def feed(request,cat_id):
 @csrf_exempt
 def add_name(request, cat_id):
     cat = Cat.objects.get(id = cat_id)
-    choice = Choice(vote_id = cat.vote.id, count=0)
+    choice = Choice(vote_id = cat.vote.id, count=0,user=get_object_or_404(User,pk=request.user.pk))
     choice_all = Choice.objects.filter(vote_id=cat.vote.id)
     # 입력 시 공백문자를 무시하고 가져온다.
     choice.name = request.POST['add_name'].strip()
@@ -188,7 +199,7 @@ def delete(request, cat_id):
 def edit(request, cat_id):
     cat = Cat.objects.get(id=cat_id)
     # 글을 수정사항을 입력하고 제출을 눌렀을 때
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         form = CatPost(request.POST, request.FILES)
         if form.is_valid():
             print(form.cleaned_data)
@@ -200,7 +211,7 @@ def edit(request, cat_id):
             return redirect('/detail/'+str(cat.pk))
 
     # 수정사항을 입력하기 위해 페이지에 처음 접속했을 때
-    else:
+    elif request.user.is_authenticated:
         form = CatPost(instance = cat)
         context={
             'form':form,
@@ -208,6 +219,8 @@ def edit(request, cat_id):
             'now':'edit',
         }
         return render(request, 'postapp/create_edit.html',context)
+    else:
+        return redirect('home')
 
 # 투표 이름 삭제
 def delete_choice(request, cat_id, choice_id):
@@ -218,10 +231,10 @@ def delete_choice(request, cat_id, choice_id):
 
 # 댓글 등록
 def comment_write(request, cat_id):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         cat = get_object_or_404(Cat, pk=cat_id)
         content = request.POST.get('content')
-        Comment.objects.create(cat=cat, comment_contents=content)
+        Comment.objects.create(cat=cat, comment_contents=content,user=get_object_or_404(User,pk=request.user.pk))
         return redirect('/detail/'+str(cat.id))
     return render(request, 'postapp/home.html')
 
@@ -229,5 +242,6 @@ def comment_write(request, cat_id):
 def comment_delete(request, cat_id, comment_id):
     cat = Cat.objects.get(id=cat_id)
     comment = Comment.objects.get(id=comment_id)
-    comment.delete()
+    if comment.user.pk == request.user.pk:
+        comment.delete()
     return redirect('/detail/'+str(cat.id))

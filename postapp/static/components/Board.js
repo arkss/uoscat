@@ -42,7 +42,7 @@ class Board extends React.Component{
         </TableHead>
         <TableBody>
           {this.props.choices.map((e,i)=>(
-            <TableRow key={i}>
+            <TableRow>
               <TableCell align="center">{e.name}</TableCell>
               <TableCell align="center">{e.count}</TableCell>
               <TableCell align="center"><Radio onClick={()=>this.handleVote(e.id,e.vote_url,i)}/></TableCell>

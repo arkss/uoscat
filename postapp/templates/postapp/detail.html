@@ -57,6 +57,7 @@
         <div class="row">
           <div class="span12">
             <article>
+              {% if own %}
               <div class="cat_delete_edit_bar" style="display:flex;flex-direction:row-reverse">
                 <div style="display: flex;">
                   <a href="{% url 'edit' cat.id %}">Edit<ion-icon name="create"></ion-icon></a>
@@ -64,6 +65,7 @@
                   data-target="#CatModal" style="margin-right: 10px;">Delete<ion-icon name="trash"></ion-icon></a>
                 </div>
               </div>
+              {% endif %}
               <div class="clearfix">
               </div>
               <div class="row">
@@ -158,9 +160,9 @@
               <div>
                 <ion-icon name="contact" style="width:20px;height:20px;margin-top:4px;"></ion-icon>
               </div>
-              <h5 class="comment-title">유저이름</h5>
+              <h5 class="comment-title">{{comment.user.username}}</h5>
             </div>
-            <p class="hidden_comment_id">{{comment.id}}</p>
+            <p class="hidden_comment_id">{{comment.user.pk}}</p>
             <h6>{{comment.comment_date | date:'Y-m-d'}}</h6>
             <p class="comment-text">{{comment.comment_contents}}</p>
           </div>
@@ -233,6 +235,7 @@
   const condition_url = "{% url 'vote_condition' cat.pk%}"
   let cat_voting="{{cat.voting}}"=="True"?true:false
   const cat_name="{{cat.name}}"
+  // console.log(str,add_url,condition_url,cat_voting,cat_name)
 </script>
 <script type="text/javascript" src="{%static './choices_voting.js' %}"></script>
 
