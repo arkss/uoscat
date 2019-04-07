@@ -14,10 +14,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',postapp.views.home, name='home'),
     path('newcat/',postapp.views.newcat, name="newcat"),
-<<<<<<< HEAD
-=======
-
->>>>>>> 61eeabac3452a328c6fa3312eaf0f9433f0f2107
     path('detail/<int:cat_id>',postapp.views.detail, name='detail'),
     path('detail/<int:cat_id>/delete',postapp.views.delete, name='delete'), # 글 삭제
     path('detail/<int:cat_id>/delete/<int:choice_id>', postapp.views.delete_choice, name='delete_choice'), # 이름 후보 삭제

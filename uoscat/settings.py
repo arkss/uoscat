@@ -50,9 +50,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 
     'allauth.socialaccount.providers.google',
-
-
 ]
+SOCIALACCOUNT_PROVIDERS = {
+    'google':{ 'SCOPE': ['email','profile'],'AUTH_PARAMS': { 'access_type': 'online' } }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
