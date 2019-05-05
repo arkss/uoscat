@@ -9,7 +9,7 @@ const {
   Grid
 } = window['material-ui'];
 
-class FormDialog extends React.Component {
+class VoteComponent extends React.Component {
   constructor(props){
     super(props);
     this.state={
@@ -124,3 +124,5 @@ class FormDialog extends React.Component {
     );
   }
 }
+
+ReactDOM.render(<VoteComponent/>, document.getElementById('app'))
